@@ -44,3 +44,7 @@ Rama: `feat/dia-1-dashboard`. Pull Request hacia `main`; esperar revisión antes
 
 - https://vite.dev/guide/
 - https://tailwindcss.com/docs/installation/using-vite
+
+## Día 2 — Pacientes
+
+La página /pacientes contiene cinco registros de ejemplo, BadgeEstado, PacienteCard y BuscadorPacientes. El buscador tiene estado local y todavía no filtra; filtros y CRUD quedan para el día 3. [Prompt, análisis y capturas del antes y después](docs/dia-2/README.md).
