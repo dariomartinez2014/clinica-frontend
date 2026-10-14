@@ -1,0 +1,57 @@
+<meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;background:#f8fafc;color:#0f172a}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;border:1px solid #cbd5e1;padding:20px;font-size:13px;line-height:1.5}h1{font-size:24px}h2{font-size:18px}</style><title>Antes — código generado</title><h1>Antes: página generada con IA</h1><p>Una página con datos, buscador, tarjetas y estados en el mismo archivo.</p><pre>import { useState } from &#39;react&#39;;
+import type { Paciente } from &#39;../types/paciente&#39;;
+
+export default function PaginaPacientes() {
+  const [busqueda, setBusqueda] = useState(&#39;&#39;);
+  const pacientes: Paciente[] = [
+    { id: &#39;PAC-001&#39;, nombre: &#39;Ana&#39;, apellido: &#39;L&#243;pez&#39;, email: &#39;ana.lopez@example.com&#39;, telefono: &#39;0000-0001&#39;, especialidadAsignada: &#39;Medicina general&#39;, ultimaCita: &#39;2026-10-10&#39;, estado: &#39;activo&#39; },
+    { id: &#39;PAC-002&#39;, nombre: &#39;Carlos&#39;, apellido: &#39;P&#233;rez&#39;, email: &#39;carlos.perez@example.com&#39;, telefono: &#39;0000-0002&#39;, especialidadAsignada: &#39;Cardiolog&#237;a&#39;, ultimaCita: &#39;2026-10-09&#39;, estado: &#39;en_espera&#39; },
+    { id: &#39;PAC-003&#39;, nombre: &#39;Mar&#237;a&#39;, apellido: &#39;Garc&#237;a&#39;, email: &#39;maria.garcia@example.com&#39;, telefono: &#39;0000-0003&#39;, especialidadAsignada: &#39;Dermatolog&#237;a&#39;, ultimaCita: &#39;2026-09-25&#39;, estado: &#39;inactivo&#39; },
+    { id: &#39;PAC-004&#39;, nombre: &#39;Jos&#233;&#39;, apellido: &#39;Ram&#237;rez&#39;, email: &#39;jose.ramirez@example.com&#39;, telefono: &#39;0000-0004&#39;, especialidadAsignada: &#39;Odontolog&#237;a&#39;, ultimaCita: &#39;2026-10-12&#39;, estado: &#39;activo&#39; },
+    { id: &#39;PAC-005&#39;, nombre: &#39;Luc&#237;a&#39;, apellido: &#39;Morales&#39;, email: &#39;lucia.morales@example.com&#39;, telefono: &#39;0000-0005&#39;, especialidadAsignada: &#39;Pediatr&#237;a&#39;, ultimaCita: &#39;2026-10-08&#39;, estado: &#39;en_espera&#39; },
+  ];
+
+  return (
+    &lt;div className=&quot;min-h-screen bg-slate-50 text-slate-900&quot;&gt;
+      &lt;header className=&quot;border-b border-slate-200 bg-white px-6 py-5&quot;&gt;
+        &lt;div className=&quot;mx-auto max-w-6xl&quot;&gt;
+          &lt;p className=&quot;text-xl font-bold text-emerald-700&quot;&gt;Cl&#237;nica Salud Integral&lt;/p&gt;
+          &lt;p className=&quot;mt-1 text-sm text-slate-500&quot;&gt;Panel de administraci&#243;n&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main className=&quot;mx-auto max-w-6xl px-6 py-8&quot;&gt;
+        &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Pacientes&lt;/h1&gt;
+        &lt;p className=&quot;mt-2 text-slate-600&quot;&gt;Directorio de pacientes de la cl&#237;nica.&lt;/p&gt;
+        &lt;div className=&quot;my-6 rounded-xl border border-slate-200 bg-white p-4&quot;&gt;
+          &lt;label htmlFor=&quot;buscar-pacientes&quot; className=&quot;mb-2 block text-sm font-medium&quot;&gt;Buscar pacientes&lt;/label&gt;
+          &lt;input id=&quot;buscar-pacientes&quot; type=&quot;search&quot; value={busqueda} onChange={event =&gt; setBusqueda(event.target.value)} placeholder=&quot;Nombre, apellido o correo&quot; className=&quot;w-full rounded-lg border border-slate-300 px-3 py-2&quot; aria-describedby=&quot;ayuda-busqueda&quot; /&gt;
+          &lt;p id=&quot;ayuda-busqueda&quot; className=&quot;mt-2 text-sm text-slate-500&quot;&gt;El buscador todav&#237;a no filtra la lista.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;p className=&quot;mb-4 text-sm text-slate-600&quot;&gt;{pacientes.length} pacientes de ejemplo&lt;/p&gt;
+        &lt;div className=&quot;flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3&quot;&gt;
+          {pacientes.map(paciente =&gt; (
+            &lt;article key={paciente.id} className=&quot;rounded-xl border border-slate-200 bg-white p-5&quot;&gt;
+              &lt;div className=&quot;flex flex-wrap items-start justify-between gap-3&quot;&gt;
+                &lt;div&gt;
+                  &lt;p className=&quot;text-xs text-slate-500&quot;&gt;{paciente.id}&lt;/p&gt;
+                  &lt;h2 className=&quot;mt-1 text-lg font-bold&quot;&gt;{paciente.nombre} {paciente.apellido}&lt;/h2&gt;
+                &lt;/div&gt;
+                &lt;span className={`rounded-full px-3 py-1 text-xs font-semibold ${paciente.estado === &#39;activo&#39; ? &#39;bg-emerald-100 text-emerald-700&#39; : paciente.estado === &#39;inactivo&#39; ? &#39;bg-slate-100 text-slate-700&#39; : &#39;bg-amber-100 text-amber-800&#39;}`}&gt;
+                  {paciente.estado === &#39;activo&#39; ? &#39;Activo&#39; : paciente.estado === &#39;inactivo&#39; ? &#39;Inactivo&#39; : &#39;En espera&#39;}
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;dl className=&quot;mt-5 space-y-3 text-sm&quot;&gt;
+                &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Correo electr&#243;nico&lt;/dt&gt;&lt;dd className=&quot;break-all&quot;&gt;{paciente.email}&lt;/dd&gt;&lt;/div&gt;
+                &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Tel&#233;fono&lt;/dt&gt;&lt;dd&gt;{paciente.telefono}&lt;/dd&gt;&lt;/div&gt;
+                &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Especialidad asignada&lt;/dt&gt;&lt;dd&gt;{paciente.especialidadAsignada}&lt;/dd&gt;&lt;/div&gt;
+                &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;&#218;ltima cita&lt;/dt&gt;&lt;dd&gt;{paciente.ultimaCita}&lt;/dd&gt;&lt;/div&gt;
+              &lt;/dl&gt;
+            &lt;/article&gt;
+          ))}
+        &lt;/div&gt;
+        &lt;p className=&quot;mt-6 text-sm text-slate-500&quot;&gt;Datos ficticios para la pr&#225;ctica, sin informaci&#243;n de pacientes reales.&lt;/p&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+</pre>

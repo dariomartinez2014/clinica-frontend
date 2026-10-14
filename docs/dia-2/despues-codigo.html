@@ -1,0 +1,127 @@
+<meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;background:#f8fafc;color:#0f172a}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;border:1px solid #cbd5e1;padding:20px;font-size:13px;line-height:1.5}h1{font-size:24px}h2{font-size:18px}</style><title>Después — componentes</title><h1>Después: componentes con props tipadas</h1><h2>src/types/paciente.ts</h2><pre>// ESTADOS: limito los valores que puede tener un paciente.
+export type EstadoPaciente = &#39;activo&#39; | &#39;inactivo&#39; | &#39;en_espera&#39;;
+
+// PACIENTE: este contrato me indica qu&#233; datos necesita cada registro.
+export interface Paciente {
+  id: string;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  especialidadAsignada: string;
+  ultimaCita: string;
+  estado: EstadoPaciente;
+}
+</pre><h2>src/components/BadgeEstado.tsx</h2><pre>import type { EstadoPaciente } from &#39;../types/paciente&#39;;
+
+// PROPS: recibo solamente el estado que voy a mostrar.
+interface BadgeEstadoProps {
+  estado: EstadoPaciente;
+}
+
+// ETIQUETAS Y COLORES: cada estado tiene su propio estilo y texto.
+const configuracionEstado: Record&lt;EstadoPaciente, { texto: string; color: string }&gt; = {
+  activo: { texto: &#39;Activo&#39;, color: &#39;bg-emerald-100 text-emerald-700&#39; },
+  inactivo: { texto: &#39;Inactivo&#39;, color: &#39;bg-slate-100 text-slate-700&#39; },
+  en_espera: { texto: &#39;En espera&#39;, color: &#39;bg-amber-100 text-amber-800&#39; },
+};
+
+export default function BadgeEstado({ estado }: BadgeEstadoProps) {
+  const configuracion = configuracionEstado[estado];
+  return (
+    &lt;span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${configuracion.color}`}&gt;
+      {configuracion.texto}
+    &lt;/span&gt;
+  );
+}
+</pre><h2>src/components/BuscadorPacientes.tsx</h2><pre>// PROPS: el valor vive en la p&#225;gina y env&#237;o el texto cuando cambia.
+interface BuscadorPacientesProps {
+  value: string;
+  onChange: (value: string) =&gt; void;
+}
+
+export default function BuscadorPacientes({ value, onChange }: BuscadorPacientesProps) {
+  return (
+    &lt;div className=&quot;my-6 rounded-xl border border-slate-200 bg-white p-4&quot;&gt;
+      &lt;label htmlFor=&quot;buscar-pacientes&quot; className=&quot;mb-2 block text-sm font-medium&quot;&gt;Buscar pacientes&lt;/label&gt;
+      &lt;input
+        id=&quot;buscar-pacientes&quot;
+        type=&quot;search&quot;
+        value={value}
+        onChange={event =&gt; onChange(event.target.value)}
+        placeholder=&quot;Nombre, apellido o correo&quot;
+        aria-describedby=&quot;ayuda-busqueda&quot;
+        className=&quot;w-full rounded-lg border border-slate-300 px-3 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600&quot;
+      /&gt;
+      {/* ALCANCE DEL D&#205;A 2: puedo escribir, pero el filtro se agrega ma&#241;ana. */}
+      &lt;p id=&quot;ayuda-busqueda&quot; className=&quot;mt-2 text-sm text-slate-500&quot;&gt;El buscador todav&#237;a no filtra la lista.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</pre><h2>src/components/PacienteCard.tsx</h2><pre>import type { Paciente } from &#39;../types/paciente&#39;;
+import BadgeEstado from &#39;./BadgeEstado&#39;;
+
+// PROPS: recibo todos los datos del paciente en un solo objeto.
+interface PacienteCardProps {
+  paciente: Paciente;
+}
+
+export default function PacienteCard({ paciente }: PacienteCardProps) {
+  return (
+    &lt;article aria-labelledby={`nombre-${paciente.id}`} className=&quot;min-w-0 rounded-xl border border-slate-200 bg-white p-5&quot;&gt;
+      &lt;div className=&quot;flex flex-wrap items-start justify-between gap-3&quot;&gt;
+        &lt;div&gt;
+          &lt;p className=&quot;text-xs text-slate-500&quot;&gt;{paciente.id}&lt;/p&gt;
+          &lt;h2 id={`nombre-${paciente.id}`} className=&quot;mt-1 text-lg font-bold&quot;&gt;{paciente.nombre} {paciente.apellido}&lt;/h2&gt;
+        &lt;/div&gt;
+        {/* ESTADO: reutilizo la etiqueta para no repetir colores ni condiciones. */}
+        &lt;BadgeEstado estado={paciente.estado} /&gt;
+      &lt;/div&gt;
+      &lt;dl className=&quot;mt-5 space-y-3 text-sm&quot;&gt;
+        &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Correo electr&#243;nico&lt;/dt&gt;&lt;dd className=&quot;break-all&quot;&gt;{paciente.email}&lt;/dd&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Tel&#233;fono&lt;/dt&gt;&lt;dd&gt;{paciente.telefono}&lt;/dd&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;Especialidad asignada&lt;/dt&gt;&lt;dd&gt;{paciente.especialidadAsignada}&lt;/dd&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;dt className=&quot;text-slate-500&quot;&gt;&#218;ltima cita&lt;/dt&gt;&lt;dd&gt;&lt;time dateTime={paciente.ultimaCita}&gt;{paciente.ultimaCita}&lt;/time&gt;&lt;/dd&gt;&lt;/div&gt;
+      &lt;/dl&gt;
+    &lt;/article&gt;
+  );
+}
+</pre><h2>src/pages/PaginaPacientes.tsx</h2><pre>// Problemas encontrados en el c&#243;digo generado por la IA:
+// 1. La p&#225;gina mezclaba buscador, tarjetas y estados en un solo componente.
+// 2. El arreglo se creaba dentro de la funci&#243;n en cada render; lo mov&#237; a src/data.
+// 3. El texto y el color del estado usaban ternarios anidados por separado.
+//    Ahora BadgeEstado centraliza ambos y evita que las condiciones difieran.
+// La primera versi&#243;n est&#225; en docs/dia-2/PaginaPacientesIA.tsx.txt.
+
+import { useState } from &#39;react&#39;;
+import PacienteCard from &#39;../components/PacienteCard&#39;;
+import BuscadorPacientes from &#39;../components/BuscadorPacientes&#39;;
+import { pacientesEjemplo } from &#39;../data/pacientes&#39;;
+
+export default function PaginaPacientes() {
+  // ESTADO LOCAL: por ahora guardo lo que escribo, sin filtrar ni hacer CRUD.
+  const [busqueda, setBusqueda] = useState&lt;string&gt;(&#39;&#39;);
+
+  return (
+    &lt;div className=&quot;min-h-screen bg-slate-50 text-slate-900&quot;&gt;
+      &lt;header className=&quot;border-b border-slate-200 bg-white px-6 py-5&quot;&gt;
+        &lt;div className=&quot;mx-auto max-w-6xl&quot;&gt;
+          &lt;p className=&quot;text-xl font-bold text-emerald-700&quot;&gt;Cl&#237;nica Salud Integral&lt;/p&gt;
+          &lt;p className=&quot;mt-1 text-sm text-slate-500&quot;&gt;Panel de administraci&#243;n&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main className=&quot;mx-auto max-w-6xl px-6 py-8&quot;&gt;
+        &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Pacientes&lt;/h1&gt;
+        &lt;p className=&quot;mt-2 text-slate-600&quot;&gt;Directorio de pacientes de la cl&#237;nica.&lt;/p&gt;
+        &lt;BuscadorPacientes value={busqueda} onChange={setBusqueda} /&gt;
+        &lt;p className=&quot;mb-4 text-sm text-slate-600&quot;&gt;{pacientesEjemplo.length} pacientes de ejemplo&lt;/p&gt;
+        {/* RESPONSIVO: columna en m&#243;vil y grid de tarjetas desde escritorio. */}
+        &lt;div className=&quot;flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3&quot;&gt;
+          {pacientesEjemplo.map(paciente =&gt; &lt;PacienteCard key={paciente.id} paciente={paciente} /&gt;)}
+        &lt;/div&gt;
+        &lt;p className=&quot;mt-6 text-sm text-slate-500&quot;&gt;Datos ficticios para la pr&#225;ctica, sin informaci&#243;n de pacientes reales.&lt;/p&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+</pre>
