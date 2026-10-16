@@ -28,19 +28,19 @@ Los médicos y pacientes de las capturas son ficticios. El envío espera 1.5 seg
 
 ### Carga de médicos
 
-![Cargando médicos](01-cargando-medicos.png)
+![Cargando médicos](01-cargando-medicos.jpg)
 
 ### Errores visibles
 
-![Formulario con errores](02-errores.png)
+![Formulario con errores](02-errores.jpg)
 
 ### Envío en curso
 
-![Agendando](03-agendando.png)
+![Agendando](03-agendando.jpg)
 
 ### Confirmación
 
-![Cita agendada](04-confirmacion.png)
+![Cita agendada](04-confirmacion.jpg)
 
 ## Rama y revisión
 
@@ -52,3 +52,4 @@ Rama: `feat/dia-4-formulario-cita`, basada en `origin/main` (día 2 integrado). 
 - [Resolver de Zod](https://github.com/react-hook-form/resolvers#zod)
 - [Zod: validaciones](https://zod.dev/api)
 - [React: useEffect y cleanup](https://react.dev/reference/react/useEffect)
+
