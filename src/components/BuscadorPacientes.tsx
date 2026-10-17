@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 // PROPS: el valor vive en la página y envío el texto cuando cambia.
 interface BuscadorPacientesProps {
   value: string;
@@ -12,13 +13,13 @@ export default function BuscadorPacientes({ value, onChange }: BuscadorPacientes
         id="buscar-pacientes"
         type="search"
         value={value}
-        onChange={event => onChange(event.target.value)}
-        placeholder="Nombre, apellido o correo"
+        onChange={(event: ChangeEvent<HTMLInputElement>) => onChange(event.target.value)}
+        placeholder="Nombre del paciente"
         aria-describedby="ayuda-busqueda"
         className="w-full rounded-lg border border-slate-300 px-3 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
       />
       {/* ALCANCE DEL DÍA 2: puedo escribir, pero el filtro se agrega mañana. */}
-      <p id="ayuda-busqueda" className="mt-2 text-sm text-slate-500">El buscador todavía no filtra la lista.</p>
+      <p id="ayuda-busqueda" className="mt-2 text-sm text-slate-500">Busca por nombre y combina la búsqueda con el estado.</p>
     </div>
   );
 }
