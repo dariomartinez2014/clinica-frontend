@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type { EstadoPaciente, Paciente } from '../types/paciente';
 import FormularioPaciente from '../components/FormularioPaciente';
 import PacienteCard from '../components/PacienteCard';
 import BuscadorPacientes from '../components/BuscadorPacientes';
-import { pacientesEjemplo } from '../data/pacientes';
 
-export default function PaginaPacientes() {
+interface PaginaPacientesProps {
+  pacientes: Paciente[];
+  setPacientes: Dispatch<SetStateAction<Paciente[]>>;
+}
+
+// PROPS: App guarda la lista para usar los mismos datos en el detalle.
+export default function PaginaPacientes({ pacientes, setPacientes }: PaginaPacientesProps) {
   const [busqueda, setBusqueda] = useState<string>('');
   const [estadoFiltro, setEstadoFiltro] = useState<EstadoPaciente | 'Todos'>('Todos');
-  const [pacientes, setPacientes] = useState<Paciente[]>(pacientesEjemplo);
   const [mensaje, setMensaje] = useState('');
 
   // La lista filtrada se deriva del estado; nunca reemplaza el arreglo original.
