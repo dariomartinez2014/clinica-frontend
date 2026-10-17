@@ -1,4 +1,5 @@
 import type { ChangeEvent } from 'react';
+import { Link } from 'react-router-dom';
 import type { EstadoPaciente, Paciente } from '../types/paciente';
 import BadgeEstado from './BadgeEstado';
 
@@ -37,6 +38,8 @@ export default function PacienteCard({ paciente, onCambiarEstado, onEliminar }: 
         <button type="button" onClick={() => onEliminar(paciente.id)} aria-label={`Eliminar a ${paciente.nombre} ${paciente.apellido}`}
           className="rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-50">Eliminar</button>
       </div>
+      {/* DETALLE: Link cambia la URL sin recargar el documento. */}
+      <Link to={`/pacientes/${paciente.id}`} className="mt-5 inline-block text-sm font-semibold text-emerald-700 hover:underline">Ver detalle →</Link>
     </article>
   );
 }
