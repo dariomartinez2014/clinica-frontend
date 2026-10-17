@@ -1,0 +1,41 @@
+import { useNavigate, useParams } from 'react-router-dom';
+import type { Paciente } from '../types/paciente';
+import BadgeEstado from '../components/BadgeEstado';
+import PaginaNotFound from './PaginaNotFound';
+
+interface PaginaDetallePacienteProps {
+  pacientes: Paciente[];
+}
+
+export default function PaginaDetallePaciente({ pacientes }: PaginaDetallePacienteProps) {
+  // PARÁMETRO: tomo el id de la URL y busco ese paciente en la lista.
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const paciente = pacientes.find(paciente => paciente.id === id);
+
+  // NO ENCONTRADO: reutilizo la misma página que usa la ruta comodín.
+  if (!paciente) return <PaginaNotFound />;
+
+  return (
+    <main className="mx-auto max-w-3xl px-6 py-8">
+      <button type="button" onClick={() => navigate(-1)} className="mb-6 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-100">← Volver</button>
+      <h1 className="text-3xl font-bold">Detalle del paciente</h1>
+      <section aria-labelledby="nombre-paciente" className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 id="nombre-paciente" className="text-2xl font-bold">{paciente.nombre} {paciente.apellido}</h2>
+          <BadgeEstado estado={paciente.estado} />
+        </div>
+        <dl className="mt-6 grid gap-5 text-sm sm:grid-cols-2">
+          <div><dt className="font-semibold text-slate-500">ID</dt><dd className="mt-1 break-all">{paciente.id}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Nombre</dt><dd className="mt-1">{paciente.nombre}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Apellido</dt><dd className="mt-1">{paciente.apellido || 'Sin registrar'}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Correo electrónico</dt><dd className="mt-1 break-all">{paciente.email}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Teléfono</dt><dd className="mt-1">{paciente.telefono}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Especialidad asignada</dt><dd className="mt-1">{paciente.especialidadAsignada}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Última cita</dt><dd className="mt-1">{paciente.ultimaCita ? <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time> : 'Sin citas'}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Estado</dt><dd className="mt-1"><BadgeEstado estado={paciente.estado} /></dd></div>
+        </dl>
+      </section>
+    </main>
+  );
+}

@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MetricCard from '../components/MetricCard';
 import StatusBadge from '../components/StatusBadge';
 import type { Metrica } from '../types';
 
 export default function PaginaDashboard() {
+  const navigate = useNavigate();
   // ESTADOS: uso un estado por métrica para practicar lo del día 1.
   const [pacientes, setPacientes] = useState<number>(128);
   const [citasHoy] = useState<string>('24');
@@ -69,6 +71,8 @@ export default function PaginaDashboard() {
           <h2 id="control-pacientes" className="text-lg font-semibold">Registro de pacientes</h2>
           <p className="mt-1 text-sm text-slate-600">Modifica la cantidad de pacientes del resumen.</p>
           <div className="mt-4 flex flex-wrap gap-3">
+            {/* NAVEGACIÓN: abro pacientes sin recargar toda la aplicación. */}
+            <button type="button" onClick={() => navigate('/pacientes')} className="rounded-lg border border-emerald-700 px-4 py-2 font-medium text-emerald-700 hover:bg-emerald-50">Ver Pacientes</button>
             <button
               type="button"
               aria-label="Disminuir pacientes"

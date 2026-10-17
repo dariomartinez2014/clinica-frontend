@@ -1,6 +1,12 @@
-# Clínica Salud Integral — Día 1
+# Clínica Salud Integral — MP1
 
-Dashboard de práctica con Vite, React, TypeScript y Tailwind CSS.
+SPA de práctica con Vite, React, TypeScript, Tailwind CSS y React Router DOM. Incluye Dashboard, pacientes, detalle, nueva cita y página 404.
+
+## Entrega actual — Día 5
+
+[Recorrido GIF, capturas, explicación de los hooks y pruebas del MP1](docs/dia-5/README.md).
+
+Las páginas se abren desde el sidebar: `/`, `/pacientes` y `/citas/nueva`. Cada paciente tiene su enlace al detalle `/pacientes/:id`. Los datos ficticios se conservan mientras navegas y se reinician al recargar.
 
 ## Ejecutar
 
@@ -48,3 +54,7 @@ Rama: `feat/dia-1-dashboard`. Pull Request hacia `main`; esperar revisión antes
 ## Día 2 — Pacientes
 
 La página /pacientes contiene cinco registros de ejemplo, BadgeEstado, PacienteCard y BuscadorPacientes. El buscador tiene estado local y todavía no filtra; filtros y CRUD quedan para el día 3. [Prompt, análisis y capturas del antes y después](docs/dia-2/README.md).
+
+## Día 4 — Nueva cita
+
+La página `/citas/nueva` contiene el formulario con React Hook Form y Zod, carga de médicos con cleanup, errores por campo y confirmación de la cita. [Explicación, pruebas y capturas del día 4](docs/dia-4/README.md).

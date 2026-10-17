@@ -1,20 +1,29 @@
+import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
 import PaginaDashboard from './pages/PaginaDashboard';
 import PaginaPacientes from './pages/PaginaPacientes';
+import PaginaDetallePaciente from './pages/PaginaDetallePaciente';
+import PaginaNuevaCita from './pages/PaginaNuevaCita';
+import PaginaNotFound from './pages/PaginaNotFound';
+import { pacientesEjemplo } from './data/pacientes';
+import type { Paciente } from './types/paciente';
 
-// PÁGINAS: conservo el dashboard y puedo abrir pacientes desde su enlace.
-// Más adelante puedo reemplazar esta selección por un router.
-function App() {
-  const esPacientes = window.location.pathname === '/pacientes';
+export default function App() {
+  // LISTA COMPARTIDA: conservo los cambios del día 3 al navegar al detalle.
+  // Sigo usando useState y props; los datos se reinician al recargar.
+  const [pacientes, setPacientes] = useState<Paciente[]>(pacientesEjemplo);
 
+  // RUTAS: Layout es el padre y Outlet muestra la página que corresponde.
   return (
-    <>
-      <nav aria-label="Navegación principal" className="flex gap-5 border-b border-slate-200 bg-white px-6 py-3 text-sm font-medium">
-        <a href="/" aria-current={!esPacientes ? 'page' : undefined} className={!esPacientes ? 'text-emerald-700 underline' : 'text-slate-600'}>Dashboard</a>
-        <a href="/pacientes" aria-current={esPacientes ? 'page' : undefined} className={esPacientes ? 'text-emerald-700 underline' : 'text-slate-600'}>Pacientes</a>
-      </nav>
-      {esPacientes ? <PaginaPacientes /> : <PaginaDashboard />}
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<PaginaDashboard />} />
+        <Route path="/pacientes" element={<PaginaPacientes pacientes={pacientes} setPacientes={setPacientes} />} />
+        <Route path="/pacientes/:id" element={<PaginaDetallePaciente pacientes={pacientes} />} />
+        <Route path="/citas/nueva" element={<PaginaNuevaCita />} />
+        <Route path="*" element={<PaginaNotFound />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;
