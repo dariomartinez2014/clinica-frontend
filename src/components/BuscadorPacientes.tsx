@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-// PROPS: el valor vive en la página y envío el texto cuando cambia.
+// La página guarda el texto de búsqueda.
 interface BuscadorPacientesProps {
   value: string;
   onChange: (value: string) => void;
@@ -18,7 +18,7 @@ export default function BuscadorPacientes({ value, onChange }: BuscadorPacientes
         aria-describedby="ayuda-busqueda"
         className="w-full rounded-lg border border-slate-300 px-3 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
       />
-      {/* ALCANCE DEL DÍA 2: puedo escribir, pero el filtro se agrega mañana. */}
+      {/* La búsqueda se combina con el filtro de estado. */}
       <p id="ayuda-busqueda" className="mt-2 text-sm text-slate-500">Busca por nombre y combina la búsqueda con el estado.</p>
     </div>
   );

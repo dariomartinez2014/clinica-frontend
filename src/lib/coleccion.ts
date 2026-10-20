@@ -1,4 +1,4 @@
-// El backend puede devolver una colección paginada o un array plano.
+// La API puede devolver un objeto con total o solo un array.
 export type Coleccion<T> = { data: T[]; total: number } | T[];
 
 export function obtenerTotal<T>(respuesta: Coleccion<T>): number {

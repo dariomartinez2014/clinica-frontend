@@ -5,7 +5,7 @@ import { citaSchema } from '../schemas/citaSchema';
 import type { CitaFormData } from '../schemas/citaSchema';
 import { useMedicos } from '../hooks/useMedicos';
 
-// VALORES INICIALES: los reutilizo cuando quiero agendar otra cita.
+// Valores iniciales al abrir o reiniciar el formulario.
 const valoresIniciales: CitaFormData = {
   pacienteNombre: '', medicoId: '', fecha: '', hora: '', motivo: '', urgencia: 'baja',
 };
@@ -13,16 +13,16 @@ const valoresIniciales: CitaFormData = {
 export default function FormularioCita() {
   const { medicos, cargando } = useMedicos();
   const [citaConfirmada, setCitaConfirmada] = useState<CitaFormData | null>(null);
-  // FECHA MÍNIMA: calculo el valor del enunciado al abrir el formulario.
+  // Calcular la fecha mínima al abrir el formulario.
   const [fechaMinima] = useState(() => new Date().toISOString().split('T')[0]);
 
-  // FORMULARIO: RHF registra los campos y Zod revisa sus reglas al enviarlos.
+  // RHF registra los campos y Zod revisa sus reglas al enviarlos.
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<CitaFormData>({
     resolver: zodResolver(citaSchema),
     defaultValues: valoresIniciales,
   });
 
-  // ENVÍO: simulo 1.5 segundos de espera; los datos solo quedan en memoria.
+  // Simular el envío. La cita todavía se guarda solo en memoria.
   async function agendarCita(datos: CitaFormData) {
     await new Promise<void>(resolve => setTimeout(resolve, 1500));
     setCitaConfirmada(datos);
@@ -33,7 +33,7 @@ export default function FormularioCita() {
     setCitaConfirmada(null);
   }
 
-  // ESTILOS: agrego el borde rojo solamente cuando el campo tiene un error.
+  // Marcar en rojo los campos con error.
   function claseCampo(conError: boolean) {
     return `mt-1 block w-full rounded-lg border bg-white px-3 py-2 text-slate-900 outline-none focus:ring-2 ${conError ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:ring-emerald-200'}`;
   }

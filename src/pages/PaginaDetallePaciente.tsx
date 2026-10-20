@@ -8,12 +8,12 @@ interface PaginaDetallePacienteProps {
 }
 
 export default function PaginaDetallePaciente({ pacientes }: PaginaDetallePacienteProps) {
-  // PARÁMETRO: tomo el id de la URL y busco ese paciente en la lista.
+  // Buscar el paciente con el ID de la URL.
   const { id } = useParams();
   const navigate = useNavigate();
   const paciente = pacientes.find(paciente => paciente.id === id);
 
-  // NO ENCONTRADO: reutilizo la misma página que usa la ruta comodín.
+  // Mostrar 404 si el paciente no existe.
   if (!paciente) return <PaginaNotFound />;
 
   return (

@@ -16,7 +16,7 @@ export default function App() {
   const { pathname } = useLocation();
   const { pacientes, setPacientes, total, cargando, error, cargarPacientes } = usePacientes(pathname.startsWith('/pacientes'));
 
-  // RUTAS: Layout es el padre y Outlet muestra la página que corresponde.
+  // Layout es el padre y Outlet muestra la página que corresponde.
   return (
     <Routes>
       <Route path="/login" element={<PaginaLogin />} />

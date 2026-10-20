@@ -1,4 +1,4 @@
-// MÉDICO: estos son los datos que necesito mostrar en el select.
+// Datos del médico para el selector.
 export interface Medico {
   id: string;
   nombre: string;

@@ -1,11 +1,11 @@
 import type { Metrica, Tendencia } from '../types';
 
-// PROPS: la tarjeta recibe una métrica completa.
+// Datos que recibe la tarjeta.
 interface MetricCardProps {
   metrica: Metrica;
 }
 
-// COLORES: así elijo el color sin escribir varios ternarios.
+// Color según la tendencia de la métrica.
 const colorPorTendencia: Record<Tendencia, string> = {
   positiva: 'text-emerald-600',
   negativa: 'text-rose-600',

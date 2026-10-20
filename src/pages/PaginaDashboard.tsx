@@ -15,7 +15,7 @@ export default function PaginaDashboard() {
 
   useEffect(() => {
     const controller = new AbortController();
-    // Sincroniza el estado visual con el comienzo de la petición a la API.
+    // Mostrar la carga mientras llegan los totales.
     // oxlint-disable-next-line react/set-state-in-effect
     setCargando(true);
     setError(false);

@@ -1,6 +1,6 @@
 import type { Paciente, EstadoPaciente } from '../types/paciente';
 
-// Contrato del servidor Express; los campos adicionales pertenecen al MP1.
+// Datos que devuelve Express. Algunos campos del MP1 son opcionales.
 export interface PacienteAPI {
   id: number | string;
   nombre: string;

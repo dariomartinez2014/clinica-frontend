@@ -6,7 +6,7 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* ROUTER: permite usar enlaces y hooks de navegación en toda la app. */}
+    {/* Navegación de la app sin recargar la página. */}
     <BrowserRouter>
       <App />
     </BrowserRouter>

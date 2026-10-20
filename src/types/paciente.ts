@@ -1,7 +1,7 @@
-// ESTADOS: limito los valores que puede tener un paciente.
+// Estados que puede mostrar la app.
 export type EstadoPaciente = 'activo' | 'inactivo' | 'en_espera' | 'sin_datos';
 
-// PACIENTE: este contrato me indica qué datos necesita cada registro.
+// Datos que usa la vista de pacientes.
 export interface Paciente {
   id: string;
   nombre: string;

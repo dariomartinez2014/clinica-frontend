@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Medico } from '../types/medico';
 
-// DATOS DE PRÁCTICA: simulo la respuesta de un servidor.
+// Médicos de ejemplo para el formulario del MP1.
 const medicosEjemplo: Medico[] = [
   { id: 'med-1', nombre: 'Dra. Ana López', especialidad: 'Medicina general' },
   { id: 'med-2', nombre: 'Dr. Carlos Pérez', especialidad: 'Pediatría' },
@@ -12,14 +12,14 @@ export function useMedicos(): { medicos: Medico[]; cargando: boolean } {
   const [medicos, setMedicos] = useState<Medico[]>([]);
   const [cargando, setCargando] = useState(true);
 
-  // CARGA: espero 800 ms y después muestro los médicos disponibles.
+  // Simular la espera antes de mostrar los médicos.
   useEffect(() => {
     const timer = setTimeout(() => {
       setMedicos(medicosEjemplo);
       setCargando(false);
     }, 800);
 
-    // LIMPIEZA: cancelo el timer si salgo de la página antes de que termine.
+    // Cancelar la espera al salir de la página.
     return () => clearTimeout(timer);
   }, []);
 

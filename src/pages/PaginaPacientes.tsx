@@ -15,13 +15,13 @@ interface PaginaPacientesProps {
   setPacientes: Dispatch<SetStateAction<Paciente[]>>;
 }
 
-// PROPS: App guarda la lista para usar los mismos datos en el detalle.
+// App guarda la lista para usar los mismos datos en el detalle.
 export default function PaginaPacientes({ pacientes, setPacientes, total, cargando, error, cargarPacientes }: PaginaPacientesProps) {
   const [busqueda, setBusqueda] = useState<string>('');
   const [estadoFiltro, setEstadoFiltro] = useState<EstadoPaciente | 'Todos'>('Todos');
   const [mensaje, setMensaje] = useState('');
 
-  // La lista filtrada se deriva del estado; nunca reemplaza el arreglo original.
+  // Filtrar sin cambiar la lista completa.
   const pacientesFiltrados = pacientes.filter(p =>
     p.nombre.toLowerCase().includes(busqueda.toLowerCase()) &&
     (estadoFiltro === 'Todos' || p.estado === estadoFiltro)
@@ -77,7 +77,7 @@ export default function PaginaPacientes({ pacientes, setPacientes, total, cargan
         <p role="status" className="mb-3 text-sm text-emerald-800">{mensaje}</p>
         <p className="mb-4 text-sm text-slate-600">{pacientesFiltrados.length} paciente(s) encontrado(s)</p>
         {pacientesFiltrados.length === 0 && <p className="mb-4 text-slate-600">No hay pacientes que coincidan con los filtros.</p>}
-        {/* RESPONSIVO: columna en móvil y grid de tarjetas desde escritorio. */}
+        {/* Una columna en móvil y varias en escritorio. */}
         <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3">
           {pacientesFiltrados.map(paciente => <PacienteCard key={paciente.id} paciente={paciente} onCambiarEstado={cambiarEstado} onEliminar={eliminar} />)}
         </div>

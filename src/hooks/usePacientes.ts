@@ -17,7 +17,7 @@ export function usePacientes(activo: boolean) {
   useEffect(() => {
     if (!activo) return;
     const controller = new AbortController();
-    // Esta actualización inicia el estado de la petición externa y su reintento.
+    // Mostrar la carga también al reintentar.
     // oxlint-disable-next-line react/set-state-in-effect
     setCargando(true);
     setError(false);

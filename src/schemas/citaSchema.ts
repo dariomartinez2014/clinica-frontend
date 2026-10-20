@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// REGLAS: aquí defino una sola vez qué datos acepta la cita.
+// Reglas para los datos de la cita.
 export const citaSchema = z.object({
   pacienteNombre: z.string().trim().min(3, 'Escribe al menos 3 caracteres.'),
   medicoId: z.string().trim().min(1, 'Selecciona un médico.'),
@@ -13,5 +13,5 @@ export const citaSchema = z.object({
   urgencia: z.enum(['baja', 'media', 'alta', 'critica'], { error: 'Selecciona una urgencia válida.' }),
 });
 
-// TIPO: lo obtengo del esquema para no repetir una interfaz con las mismas reglas.
+// Crear el tipo a partir del esquema de Zod.
 export type CitaFormData = z.infer<typeof citaSchema>;

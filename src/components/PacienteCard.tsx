@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import type { EstadoPaciente, Paciente } from '../types/paciente';
 import BadgeEstado from './BadgeEstado';
 
-// PROPS: recibo todos los datos del paciente en un solo objeto.
+// Datos y acciones de la tarjeta del paciente.
 interface PacienteCardProps {
   paciente: Paciente;
   onCambiarEstado: (id: string, estado: EstadoPaciente) => void;
@@ -18,7 +18,7 @@ export default function PacienteCard({ paciente, onCambiarEstado, onEliminar }: 
           <p className="text-xs text-slate-500">{paciente.id}</p>
           <h2 id={`nombre-${paciente.id}`} className="mt-1 text-lg font-bold">{paciente.nombre} {paciente.apellido}</h2>
         </div>
-        {/* ESTADO: reutilizo la etiqueta para no repetir colores ni condiciones. */}
+        {/* Etiqueta con el estado del paciente. */}
         <BadgeEstado estado={paciente.estado} />
       </div>
       <dl className="mt-5 space-y-3 text-sm">
@@ -39,7 +39,7 @@ export default function PacienteCard({ paciente, onCambiarEstado, onEliminar }: 
         <button type="button" onClick={() => onEliminar(paciente.id)} aria-label={`Eliminar a ${paciente.nombre} ${paciente.apellido}`}
           className="rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-50">Eliminar</button>
       </div>
-      {/* DETALLE: Link cambia la URL sin recargar el documento. */}
+      {/* Link cambia la URL sin recargar el documento. */}
       <Link to={`/pacientes/${paciente.id}`} className="mt-5 inline-block text-sm font-semibold text-emerald-700 hover:underline">Ver detalle →</Link>
     </article>
   );

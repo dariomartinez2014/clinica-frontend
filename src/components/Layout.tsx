@@ -1,14 +1,14 @@
 import { NavLink, Outlet } from 'react-router-dom';
 
 export default function Layout() {
-  // ENLACE ACTIVO: NavLink me indica qué sección estoy visitando.
+  // NavLink marca la sección actual.
   function claseEnlace({ isActive }: { isActive: boolean }) {
     return `block rounded-lg px-4 py-3 text-sm font-medium ${isActive ? 'bg-emerald-100 text-emerald-800' : 'text-slate-600 hover:bg-slate-100'}`;
   }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      {/* SIDEBAR: fijo en escritorio; en móvil queda arriba para dejar espacio. */}
+      {/* Menú lateral en escritorio y arriba en móvil. */}
       <aside className="border-b border-slate-200 bg-white p-5 md:fixed md:inset-y-0 md:left-0 md:w-60 md:border-r md:border-b-0">
         <p className="text-xl font-bold text-emerald-700">Clínica Salud Integral</p>
         <p className="mt-1 text-sm text-slate-500">Panel de administración</p>
@@ -19,7 +19,7 @@ export default function Layout() {
         </nav>
         <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">MP2 · Datos reales</p>
       </aside>
-      {/* CONTENIDO: cada ruta se muestra aquí sin repetir el menú. */}
+      {/* Aquí se muestra la página de cada ruta. */}
       <div className="md:ml-60">
         <Outlet />
       </div>
