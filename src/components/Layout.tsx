@@ -17,7 +17,7 @@ export default function Layout() {
           <NavLink to="/pacientes" className={claseEnlace}>Pacientes</NavLink>
           <NavLink to="/citas/nueva" className={claseEnlace}>Nueva cita</NavLink>
         </nav>
-        <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">MP1 · Proyecto de práctica</p>
+        <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">MP2 · Datos reales</p>
       </aside>
       {/* CONTENIDO: cada ruta se muestra aquí sin repetir el menú. */}
       <div className="md:ml-60">

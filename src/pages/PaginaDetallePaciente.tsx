@@ -32,7 +32,7 @@ export default function PaginaDetallePaciente({ pacientes }: PaginaDetallePacien
           <div><dt className="font-semibold text-slate-500">Correo electrónico</dt><dd className="mt-1 break-all">{paciente.email}</dd></div>
           <div><dt className="font-semibold text-slate-500">Teléfono</dt><dd className="mt-1">{paciente.telefono}</dd></div>
           <div><dt className="font-semibold text-slate-500">Especialidad asignada</dt><dd className="mt-1">{paciente.especialidadAsignada}</dd></div>
-          <div><dt className="font-semibold text-slate-500">Última cita</dt><dd className="mt-1">{paciente.ultimaCita ? <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time> : 'Sin citas'}</dd></div>
+          <div><dt className="font-semibold text-slate-500">Última cita</dt><dd className="mt-1">{paciente.ultimaCita ? <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time> : 'Sin información'}</dd></div>
           <div><dt className="font-semibold text-slate-500">Estado</dt><dd className="mt-1"><BadgeEstado estado={paciente.estado} /></dd></div>
         </dl>
       </section>

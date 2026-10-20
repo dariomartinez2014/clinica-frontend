@@ -7,6 +7,7 @@ interface BadgeEstadoProps {
 
 // ETIQUETAS Y COLORES: cada estado tiene su propio estilo y texto.
 const configuracionEstado: Record<EstadoPaciente, { texto: string; color: string }> = {
+  sin_datos: { texto: 'Sin información', color: 'bg-slate-100 text-slate-700' },
   activo: { texto: 'Activo', color: 'bg-emerald-100 text-emerald-700' },
   inactivo: { texto: 'Inactivo', color: 'bg-slate-100 text-slate-700' },
   en_espera: { texto: 'En espera', color: 'bg-amber-100 text-amber-800' },

@@ -1,3 +1,4 @@
+import Cargando from '../components/Cargando';
 import { useState } from 'react';
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type { EstadoPaciente, Paciente } from '../types/paciente';
@@ -6,12 +7,16 @@ import PacienteCard from '../components/PacienteCard';
 import BuscadorPacientes from '../components/BuscadorPacientes';
 
 interface PaginaPacientesProps {
+  total: number;
+  cargando: boolean;
+  error: boolean;
+  cargarPacientes: () => void;
   pacientes: Paciente[];
   setPacientes: Dispatch<SetStateAction<Paciente[]>>;
 }
 
 // PROPS: App guarda la lista para usar los mismos datos en el detalle.
-export default function PaginaPacientes({ pacientes, setPacientes }: PaginaPacientesProps) {
+export default function PaginaPacientes({ pacientes, setPacientes, total, cargando, error, cargarPacientes }: PaginaPacientesProps) {
   const [busqueda, setBusqueda] = useState<string>('');
   const [estadoFiltro, setEstadoFiltro] = useState<EstadoPaciente | 'Todos'>('Todos');
   const [mensaje, setMensaje] = useState('');
@@ -50,6 +55,13 @@ export default function PaginaPacientes({ pacientes, setPacientes }: PaginaPacie
       <main className="mx-auto max-w-6xl px-6 py-8">
         <h1 className="text-3xl font-bold">Pacientes</h1>
         <p className="mt-2 text-slate-600">Directorio de pacientes de la clínica.</p>
+        {cargando ? <Cargando /> : error ? (
+          <div role="alert" className="my-6 rounded-lg bg-red-50 p-5 text-red-800">
+            <p>No se pudieron cargar los pacientes.</p>
+            <button type="button" onClick={cargarPacientes} className="mt-3 rounded-lg border border-red-300 px-4 py-2">Reintentar</button>
+          </div>
+        ) : <>
+        <p className="mt-4 text-slate-600">{total} paciente(s) registrado(s)</p>
         <BuscadorPacientes value={busqueda} onChange={setBusqueda} />
         <div className="mb-6 flex flex-wrap items-end gap-4">
           <label htmlFor="filtro-estado" className="text-sm font-medium">Filtrar por estado
@@ -69,7 +81,8 @@ export default function PaginaPacientes({ pacientes, setPacientes }: PaginaPacie
         <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3">
           {pacientesFiltrados.map(paciente => <PacienteCard key={paciente.id} paciente={paciente} onCambiarEstado={cambiarEstado} onEliminar={eliminar} />)}
         </div>
-        <p className="mt-6 text-sm text-slate-500">Datos ficticios de práctica. Los cambios se guardan solo en memoria y se reinician al recargar.</p>
+        <p className="mt-6 text-sm text-slate-500">Pacientes cargados desde la API. Las acciones de edición de esta práctica todavía son locales; se conectarán al backend en el día 2.</p>
+        </>}
       </main>
     </div>
   );

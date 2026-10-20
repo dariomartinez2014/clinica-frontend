@@ -1,4 +1,12 @@
-# Clínica Salud Integral — MP1
+# Clínica Salud Integral — MP2
+
+## Entrega actual — Día 1: datos reales
+
+Dashboard y pacientes conectados al backend Express mediante Axios, con autenticación, CORS, spinner, errores y reintento. [Configuración, implementación, validación y capturas](docs/mp2-dia-1/README.md).
+
+Copiar `.env.example` a `.env.local`, iniciar el backend en `localhost:3000`, ejecutar `npm install` y `npm run dev`, e iniciar sesión en `/login` con una cuenta de recepción.
+
+Las secciones siguientes conservan la documentación histórica del MP1.
 
 SPA de práctica con Vite, React, TypeScript, Tailwind CSS y React Router DOM. Incluye Dashboard, pacientes, detalle, nueva cita y página 404.
 

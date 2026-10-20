@@ -25,13 +25,14 @@ export default function PacienteCard({ paciente, onCambiarEstado, onEliminar }: 
         <div><dt className="text-slate-500">Correo electrónico</dt><dd className="break-all">{paciente.email}</dd></div>
         <div><dt className="text-slate-500">Teléfono</dt><dd>{paciente.telefono}</dd></div>
         <div><dt className="text-slate-500">Especialidad asignada</dt><dd>{paciente.especialidadAsignada}</dd></div>
-        <div><dt className="text-slate-500">Última cita</dt><dd>{paciente.ultimaCita ? <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time> : "Sin citas"}</dd></div>
+        <div><dt className="text-slate-500">Última cita</dt><dd>{paciente.ultimaCita ? <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time> : "Sin información"}</dd></div>
       </dl>
       <div className="mt-5 flex flex-wrap items-end gap-3">
         <label className="text-sm" htmlFor={`estado-${paciente.id}`}>Cambiar estado
           <select id={`estado-${paciente.id}`} value={paciente.estado}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onCambiarEstado(paciente.id, event.target.value as EstadoPaciente)}
             className="mt-1 block rounded-lg border border-slate-300 px-3 py-2">
+            <option value="sin_datos" disabled>Sin información</option>
             <option value="activo">Activo</option><option value="inactivo">Inactivo</option><option value="en_espera">En espera</option>
           </select>
         </label>
