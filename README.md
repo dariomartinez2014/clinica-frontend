@@ -8,6 +8,14 @@ El dashboard y la lista de pacientes ahora cargan los datos del backend con Axio
 
 Axios agrega el token de sesión a las peticiones. Si el servidor responde 401, la app lleva al login.
 
+## MP2 — Día 2
+
+Ya se pueden registrar, editar y eliminar pacientes. Los formularios usan React Hook Form y Zod. Los avisos de éxito y error aparecen con react-hot-toast.
+
+La agenda médica cambia el estado de las citas con `useOptimistic`: el cambio se ve al instante y se revierte si falla la petición. También se pueden crear citas desde el formulario.
+
+[Pruebas y capturas del día 2](docs/mp2-dia2/README.md).
+
 ## Cómo ejecutarlo
 
 Primero iniciar el backend de `clinica-salud-integral` en el puerto 3000. Después, en este proyecto:
@@ -22,7 +30,7 @@ Copiar `.env.example` a `.env.local` y ejecutar:
 npm run dev
 ```
 
-Abrir `http://localhost:5173/login` y entrar con una cuenta de recepción.
+Abrir `http://localhost:5173/login` y entrar con una cuenta de recepción para gestionar pacientes y crear citas. Para cambiar estados, usar una cuenta de médico y elegir “Agenda médica” al iniciar sesión.
 
 [Explicación del día 1, pruebas y capturas](docs/mp2-dia-1/README.md).
 
@@ -33,7 +41,7 @@ npm run build
 npm run lint
 ```
 
-Ambos comandos pasan. Todavía falta adjuntar la captura del panel Network que pide la tarea.
+Ambos comandos pasan.
 
 ## Trabajos anteriores del MP1
 
