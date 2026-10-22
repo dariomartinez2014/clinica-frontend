@@ -32,17 +32,21 @@ También se probó contra Express y PostgreSQL desde la interfaz: registrar y ed
 
 Se revisó el código para confirmar que las suscripciones usan selectores y que `useState` queda para formularios y UI. La inspección visual en React DevTools sigue pendiente.
 
-## Captura de Redux DevTools pendiente
+## Capturas de Redux DevTools
 
-El navegador integrado disponible no expone las extensiones. Falta tomar y adjuntar la captura real del historial antes de entregar:
+Capturas tomadas en Chrome con la extensión Redux DevTools. Muestran el historial real de las tres instancias:
 
-1. Abrir `http://localhost:5173` en Chrome o Edge con Redux DevTools instalado y ejecutar la app con `npm run dev`.
-2. Abrir las herramientas del navegador y la pestaña Redux.
-3. En el selector de instancias elegir `PacientesStore`. Entrar a Pacientes y actualizar la lista: aparecen `pacientes/cargar` y `pacientes/cargarExito`.
-4. Elegir `FiltrosStore`, escribir una búsqueda y limpiar los filtros. Aparecen `filtros/setQueryPacientes` y `filtros/resetFiltros`.
-5. Elegir `CitasStore`, abrir el detalle de un paciente y seleccionar una cita. Aparecen `citas/cargarPorPaciente`, `citas/cargarExito` y `citas/seleccionar`.
-6. Guardar capturas del historial de las tres instancias y agregarlas al PR. Usar únicamente registros ficticios; el estado del store puede incluir datos del resto de la lista.
-7. En React DevTools revisar que las páginas ya no reciben arrays ni setters de pacientes o citas por props.
+- `PacientesStore`: carga y respuesta exitosa de pacientes.
+- `FiltrosStore`: cambios de búsqueda y `filtros/resetFiltros`.
+- `CitasStore`: carga por paciente y `citas/cargarExito`. El paciente de la captura no tiene citas, por eso no aparece `citas/seleccionar`; esa acción se verificó en las pruebas automatizadas y en el recorrido de interfaz anterior.
+
+![Historial de PacientesStore](redux-pacientes.png)
+
+![Historial de FiltrosStore](redux-filtros.png)
+
+![Historial de CitasStore](redux-citas.png)
+
+La inspección del árbol en React DevTools sigue pendiente; estas capturas corresponden a Redux DevTools.
 
 Referencia: [middleware devtools de Zustand](https://zustand.docs.pmnd.rs/reference/middlewares/devtools).
 
@@ -57,3 +61,4 @@ Solo contienen el paciente y la cita ficticios creados para esta prueba. Ambos s
 ## Entrega
 
 La rama continúa desde el día 2 y el PR apunta a `main`. Primero deben integrarse los PR anteriores. Este día no necesita cambios nuevos en el backend.
+
