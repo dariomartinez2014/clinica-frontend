@@ -1,6 +1,7 @@
 import PaginaCitas from "./pages/PaginaCitas";
 import PaginaLogin from "./pages/PaginaLogin";
-import { usePacientes } from "./hooks/usePacientes";
+import { useEffect } from "react";
+import { usePacientesStore } from "./stores/pacientesStore";
 import Cargando from "./components/Cargando";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
@@ -11,39 +12,20 @@ import PaginaNuevaCita from "./pages/PaginaNuevaCita";
 import PaginaNotFound from "./pages/PaginaNotFound";
 
 export default function App() {
-  // La lista real se comparte con el detalle del paciente.
-
   const { pathname } = useLocation();
-  const {
-    pacientes,
-    setPacientes,
-    total,
-    setTotal,
-    cargando,
-    error,
-    cargarPacientes,
-  } = usePacientes(pathname.startsWith("/pacientes"));
-
+  const cargar = usePacientesStore((s) => s.cargar);
+  const cargando = usePacientesStore((s) => s.cargando);
+  const error = usePacientesStore((s) => s.error);
+  useEffect(() => {
+    if (pathname.startsWith("/pacientes")) void cargar();
+  }, [pathname, cargar]);
   // Layout es el padre y Outlet muestra la página que corresponde.
   return (
     <Routes>
       <Route path="/login" element={<PaginaLogin />} />
       <Route element={<Layout />}>
         <Route path="/" element={<PaginaDashboard />} />
-        <Route
-          path="/pacientes"
-          element={
-            <PaginaPacientes
-              pacientes={pacientes}
-              setPacientes={setPacientes}
-              total={total}
-              setTotal={setTotal}
-              cargando={cargando}
-              error={error}
-              cargarPacientes={cargarPacientes}
-            />
-          }
-        />
+        <Route path="/pacientes" element={<PaginaPacientes />} />
         <Route
           path="/pacientes/:id"
           element={
@@ -53,12 +35,17 @@ export default function App() {
               ) : error ? (
                 <div role="alert" className="p-6">
                   No se pudo cargar el paciente.{" "}
-                  <button type="button" onClick={cargarPacientes}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      void cargar();
+                    }}
+                  >
                     Reintentar
                   </button>
                 </div>
               ) : (
-                <PaginaDetallePaciente pacientes={pacientes} />
+                <PaginaDetallePaciente />
               )}
             </>
           }

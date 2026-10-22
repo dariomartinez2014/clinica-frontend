@@ -1,16 +1,12 @@
 import { useOptimistic, useTransition } from "react";
 import toast from "react-hot-toast";
 import type { Cita, EstadoCita } from "../types/cita";
-import { updateEstado } from "../services/citas";
+import { useCitasStore } from "../stores/citasStore";
 import { extraerMensajeError } from "../lib/errorHandler";
 
-export default function CitaCard({
-  cita,
-  onActualizar,
-}: {
-  cita: Cita;
-  onActualizar: (cita: Cita) => void;
-}) {
+export default function CitaCard({ cita }: { cita: Cita }) {
+  const actualizarEstado = useCitasStore((s) => s.actualizarEstado);
+  const seleccionar = useCitasStore((s) => s.seleccionar);
   const [estado, mostrarEstado] = useOptimistic(
     cita.estado,
     (_actual, siguiente: EstadoCita) => siguiente,
@@ -20,8 +16,7 @@ export default function CitaCard({
     startTransition(async () => {
       mostrarEstado(siguiente);
       try {
-        const { data } = await updateEstado(cita.id, siguiente);
-        onActualizar(data);
+        await actualizarEstado(cita.id, siguiente);
         toast.success("Estado de cita actualizado");
       } catch (err: unknown) {
         toast.error(`Cambio revertido: ${extraerMensajeError(err)}`);
@@ -33,6 +28,12 @@ export default function CitaCard({
       aria-label={`Cita ${cita.id}`}
       className="rounded-xl border border-slate-200 bg-white p-5"
     >
+      <button
+        onClick={() => seleccionar(cita.id)}
+        className="mb-3 text-sm text-emerald-700 underline"
+      >
+        Ver motivo de la cita
+      </button>
       <div className="flex items-center justify-between gap-3">
         <h2 className="font-bold">Cita #{cita.id}</h2>
         <span

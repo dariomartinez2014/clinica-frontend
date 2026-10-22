@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { citaSchema } from "../schemas/citaSchema";
 import type { CitaFormData } from "../schemas/citaSchema";
 import { useMedicos } from "../hooks/useMedicos";
-import * as pacientesServicio from "../services/pacientes";
-import * as citasServicio from "../services/citas";
-import { obtenerDatos } from "../lib/coleccion";
+import { usePacientesStore } from "../stores/pacientesStore";
+import { useCitasStore } from "../stores/citasStore";
+
 import { extraerMensajeError } from "../lib/errorHandler";
-import type { PacienteAPI } from "../lib/pacientes";
+
 import Cargando from "./Cargando";
 
 export default function FormularioCita() {
@@ -19,10 +19,11 @@ export default function FormularioCita() {
     error: errorMedicos,
     reintentar,
   } = useMedicos();
-  const [pacientes, setPacientes] = useState<PacienteAPI[]>([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState("");
-  const [intento, setIntento] = useState(0);
+  const pacientes = usePacientesStore((s) => s.pacientes);
+  const cargando = usePacientesStore((s) => s.cargando);
+  const error = usePacientesStore((s) => s.error);
+  const cargar = usePacientesStore((s) => s.cargar);
+  const agregarCita = useCitasStore((s) => s.agregarCita);
   const {
     register,
     handleSubmit,
@@ -39,27 +40,11 @@ export default function FormularioCita() {
     },
   });
   useEffect(() => {
-    const controller = new AbortController();
-    // Mostrar el estado de la petición y del reintento.
-    // oxlint-disable-next-line react/set-state-in-effect
-    setCargando(true);
-    setError("");
-    pacientesServicio
-      .list(controller.signal)
-      .then(({ data }) => {
-        if (!controller.signal.aborted) setPacientes(obtenerDatos(data));
-      })
-      .catch((err: unknown) => {
-        if (!controller.signal.aborted) setError(extraerMensajeError(err));
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setCargando(false);
-      });
-    return () => controller.abort();
-  }, [intento]);
+    void cargar();
+  }, [cargar]);
   async function guardar(datos: CitaFormData) {
     try {
-      await citasServicio.create({
+      await agregarCita({
         pacienteId: Number(datos.pacienteId),
         medicoId: Number(datos.medicoId),
         fecha: new Date(`${datos.fecha}T${datos.hora}:00`).toISOString(),
@@ -78,7 +63,7 @@ export default function FormularioCita() {
         <p>No se pudieron cargar las opciones: {error || errorMedicos}</p>
         <button
           onClick={() => {
-            setIntento((valor) => valor + 1);
+            void cargar();
             reintentar();
           }}
           className="mt-3 rounded-lg border border-red-300 px-4 py-2"

@@ -1,41 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
-import toast from "react-hot-toast";
-import type { Cita } from "../types/cita";
-import { listAgenda } from "../services/citas";
-import { extraerMensajeError } from "../lib/errorHandler";
+
+import { useCitasStore } from "../stores/citasStore";
+import { useFiltrosStore } from "../stores/filtrosStore";
+
 import CitaCard from "../components/CitaCard";
 import Cargando from "../components/Cargando";
 
 export default function PaginaCitas() {
-  const [citas, setCitas] = useState<Cita[]>([]);
+  const citas = useCitasStore((s) => s.citas);
+  const cargando = useCitasStore((s) => s.cargando);
+  const error = useCitasStore((s) => s.error);
+  const cargarPorMedico = useCitasStore((s) => s.cargarPorMedico);
+  const seleccionada = useCitasStore((s) => s.citaSeleccionada);
+  const estadoFiltro = useFiltrosStore((s) => s.estadoCitaFiltro);
+  const setEstado = useFiltrosStore((s) => s.setEstadoCita);
   const [medicoId, setMedicoId] = useState("");
   const [busqueda, setBusqueda] = useState("");
-  const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState("");
   const [consultado, setConsultado] = useState(false);
-  const peticion = useRef<AbortController | null>(null);
-  useEffect(() => () => peticion.current?.abort(), []);
   async function cargar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    peticion.current?.abort();
-    const controller = new AbortController();
-    peticion.current = controller;
-    setCargando(true);
-    setError("");
     setConsultado(true);
-    try {
-      const { data } = await listAgenda(Number(medicoId), controller.signal);
-      if (!controller.signal.aborted) setCitas(data);
-    } catch (err: unknown) {
-      if (!controller.signal.aborted) {
-        const mensaje = extraerMensajeError(err);
-        setError(mensaje);
-        toast.error(mensaje);
-      }
-    } finally {
-      if (!controller.signal.aborted) setCargando(false);
-    }
+    await cargarPorMedico(Number(medicoId));
   }
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">
@@ -87,46 +73,65 @@ export default function PaginaCitas() {
           />
         </label>
       )}
+      <label>
+        Estado{" "}
+        <select
+          aria-label="Filtrar estado de cita"
+          value={estadoFiltro}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (
+              value === "Todos" ||
+              value === "PROGRAMADA" ||
+              value === "COMPLETADA" ||
+              value === "CANCELADA"
+            )
+              setEstado(value);
+          }}
+          className="m-2 rounded border p-2"
+        >
+          <option>Todos</option>
+          <option>PROGRAMADA</option>
+          <option>COMPLETADA</option>
+          <option>CANCELADA</option>
+        </select>
+      </label>
+      {consultado && seleccionada && (
+        <p role="status" className="my-4 rounded border p-3">
+          Cita #{seleccionada.id}:{" "}
+          {seleccionada.motivo || "Sin motivo registrado"}
+        </p>
+      )}
       {cargando ? (
         <Cargando />
-      ) : error ? (
+      ) : error && citas.length === 0 ? (
         <p role="alert" className="rounded-lg bg-red-50 p-4 text-red-800">
-          No se pudo cargar la agenda: {error}. Comprueba el rol y el ID, e
-          intenta consultar de nuevo.
+          No se pudo completar la operación: {error}. Comprueba el rol y el ID,
+          e intenta consultar de nuevo.
         </p>
       ) : consultado && citas.length === 0 ? (
         <p>No hay citas para este médico.</p>
-      ) : (
+      ) : consultado ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {citas
-            .filter((cita) =>
-              [
-                cita.id,
-                cita.paciente?.nombre,
-                cita.paciente?.apellido,
-                cita.motivo,
-              ]
-                .join(" ")
-                .toLowerCase()
-                .includes(busqueda.toLowerCase()),
+            .filter(
+              (cita) =>
+                [
+                  cita.id,
+                  cita.paciente?.nombre,
+                  cita.paciente?.apellido,
+                  cita.motivo,
+                ]
+                  .join(" ")
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase()) &&
+                (estadoFiltro === "Todos" || cita.estado === estadoFiltro),
             )
             .map((cita) => (
-              <CitaCard
-                key={cita.id}
-                cita={cita}
-                onActualizar={(actualizada) =>
-                  setCitas((prev) =>
-                    prev.map((item) =>
-                      item.id === actualizada.id
-                        ? { ...item, ...actualizada }
-                        : item,
-                    ),
-                  )
-                }
-              />
+              <CitaCard key={cita.id} cita={cita} />
             ))}
         </div>
-      )}
+      ) : null}
     </main>
   );
 }

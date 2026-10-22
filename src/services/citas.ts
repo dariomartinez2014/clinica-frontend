@@ -12,3 +12,7 @@ export const updateEstado = (
   id: number,
   estado: Exclude<EstadoCita, "PROGRAMADA">,
 ) => api.patch<Cita>(`/citas/${id}/status`, { status: estado });
+
+// El expediente ya incluye las citas del paciente.
+export const listPorPaciente = (id: number) =>
+  api.get<{ citas: Cita[] }>("/pacientes/" + id);

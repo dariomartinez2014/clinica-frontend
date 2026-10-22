@@ -14,8 +14,8 @@ export interface PacienteRegistro {
 export type CrearPacienteDTO = Omit<PacienteRegistro, "id">;
 export type ActualizarPacienteDTO = Partial<CrearPacienteDTO>;
 
-export const list = (signal?: AbortSignal) =>
-  api.get<Coleccion<PacienteAPI>>("/pacientes", { signal });
+export const list = (signal?: AbortSignal, query?: string) =>
+  api.get<Coleccion<PacienteAPI>>("/pacientes", { signal, params: { query } });
 export const create = (data: CrearPacienteDTO) =>
   api.post<{ mensaje: string; paciente: PacienteAPI }>("/pacientes", data);
 export const update = (id: number, data: ActualizarPacienteDTO) =>

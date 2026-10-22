@@ -1,3 +1,8 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { usePacientesStore } from "../stores/pacientesStore";
+import { extraerMensajeError } from "../lib/errorHandler";
+import ModalConfirmacion from "./ModalConfirmacion";
 import { Link } from "react-router-dom";
 import type { Paciente } from "../types/paciente";
 import BadgeEstado from "./BadgeEstado";
@@ -6,14 +11,27 @@ import BadgeEstado from "./BadgeEstado";
 interface PacienteCardProps {
   paciente: Paciente;
   onEditar: () => void;
-  onEliminar: () => void;
 }
 
 export default function PacienteCard({
   paciente,
   onEditar,
-  onEliminar,
 }: PacienteCardProps) {
+  const eliminar = usePacientesStore((s) => s.eliminar);
+  const [confirmando, setConfirmando] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
+  async function confirmar() {
+    if (eliminando) return;
+    setEliminando(true);
+    try {
+      await eliminar(Number(paciente.id));
+      toast.success("Paciente eliminado");
+    } catch (err: unknown) {
+      toast.error(extraerMensajeError(err));
+    } finally {
+      setEliminando(false);
+    }
+  }
   return (
     <article
       aria-labelledby={`nombre-${paciente.id}`}
@@ -63,7 +81,7 @@ export default function PacienteCard({
         </button>
         <button
           type="button"
-          onClick={onEliminar}
+          onClick={() => setConfirmando(true)}
           aria-label={`Eliminar a ${paciente.nombre} ${paciente.apellido}`}
           className="rounded-lg border border-red-300 px-3 py-2 text-sm text-red-700 hover:bg-red-50"
         >
@@ -77,6 +95,23 @@ export default function PacienteCard({
       >
         Ver detalle →
       </Link>
+      {confirmando && (
+        <ModalConfirmacion
+          titulo="Eliminar paciente"
+          mensaje={
+            "¿Eliminar a " +
+            paciente.nombre +
+            " " +
+            paciente.apellido +
+            "? Esta acción no se puede deshacer."
+          }
+          cargando={eliminando}
+          onCancelar={() => setConfirmando(false)}
+          onConfirmar={() => {
+            void confirmar();
+          }}
+        />
+      )}
     </article>
   );
 }

@@ -1,59 +1,19 @@
-import toast from "react-hot-toast";
-import { extraerMensajeError } from "../lib/errorHandler";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDashboardStore } from "../stores/dashboardStore";
 import { Link } from "react-router-dom";
 import MetricCard from "../components/MetricCard";
 import Cargando from "../components/Cargando";
-import { api } from "../lib/axios";
-import { obtenerTotal } from "../lib/coleccion";
-import type { Coleccion } from "../lib/coleccion";
+
 import type { Metrica } from "../types";
 
 export default function PaginaDashboard() {
-  const [totales, setTotales] = useState<number[] | null>(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(false);
-  const [intento, setIntento] = useState(0);
-
+  const totales = useDashboardStore((s) => s.totales);
+  const cargando = useDashboardStore((s) => s.cargando);
+  const error = useDashboardStore((s) => s.error);
+  const cargar = useDashboardStore((s) => s.cargar);
   useEffect(() => {
-    const controller = new AbortController();
-    // Mostrar la carga mientras llegan los totales.
-    // oxlint-disable-next-line react/set-state-in-effect
-    setCargando(true);
-    setError(false);
-    const cargar = async () => {
-      try {
-        const respuestas = await Promise.all([
-          api.get<Coleccion<unknown>>("/pacientes", {
-            signal: controller.signal,
-          }),
-          api.get<Coleccion<unknown>>("/medicos", {
-            signal: controller.signal,
-          }),
-          api.get<Coleccion<unknown>>("/citas", {
-            params: { estado: "Programada" },
-            signal: controller.signal,
-          }),
-          api.get<Coleccion<unknown>>("/citas", {
-            params: { estado: "Completada" },
-            signal: controller.signal,
-          }),
-        ]);
-        if (!controller.signal.aborted)
-          setTotales(respuestas.map(({ data }) => obtenerTotal(data)));
-      } catch (err: unknown) {
-        if (!controller.signal.aborted) {
-          setError(true);
-          toast.error(extraerMensajeError(err));
-        }
-      } finally {
-        if (!controller.signal.aborted) setCargando(false);
-      }
-    };
     void cargar();
-    return () => controller.abort();
-  }, [intento]);
-
+  }, [cargar]);
   const titulos = [
     "Pacientes",
     "Médicos",
@@ -89,7 +49,9 @@ export default function PaginaDashboard() {
           </p>
           <button
             type="button"
-            onClick={() => setIntento((valor) => valor + 1)}
+            onClick={() => {
+              void cargar();
+            }}
             className="mt-3 rounded-lg border border-red-300 px-4 py-2"
           >
             Reintentar

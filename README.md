@@ -16,6 +16,12 @@ La agenda médica cambia el estado de las citas con `useOptimistic`: el cambio s
 
 [Pruebas y capturas del día 2](docs/mp2-dia2/README.md).
 
+## MP2 — Día 3
+
+Pacientes, citas y filtros ahora se comparten con Zustand. Los componentes usan selectores y las acciones tienen nombre para Redux DevTools. Las métricas y los médicos también tienen stores para evitar copias locales de datos de la API.
+
+[Cambios, pruebas y pasos para DevTools](docs/mp2-dia3/README.md).
+
 ## Cómo ejecutarlo
 
 Primero iniciar el backend de `clinica-salud-integral` en el puerto 3000. Después, en este proyecto:
@@ -39,6 +45,7 @@ Abrir `http://localhost:5173/login` y entrar con una cuenta de recepción para g
 ```bash
 npm run build
 npm run lint
+npm run test:stores
 ```
 
 Ambos comandos pasan.

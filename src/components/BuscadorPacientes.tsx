@@ -1,14 +1,8 @@
 import type { ChangeEvent } from "react";
-// La página guarda el texto de búsqueda.
-interface BuscadorPacientesProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export default function BuscadorPacientes({
-  value,
-  onChange,
-}: BuscadorPacientesProps) {
+import { useFiltrosStore } from "../stores/filtrosStore";
+export default function BuscadorPacientes() {
+  const value = useFiltrosStore((s) => s.queryPacientes);
+  const onChange = useFiltrosStore((s) => s.setQueryPacientes);
   return (
     <div className="my-6 rounded-xl border border-slate-200 bg-white p-4">
       <label

@@ -4,13 +4,13 @@ import toast from "react-hot-toast";
 import { pacienteSchema } from "../schemas/pacienteSchema";
 import type { PacienteFormData } from "../schemas/pacienteSchema";
 import type { Paciente } from "../types/paciente";
-import * as servicio from "../services/pacientes";
-import { presentarPaciente } from "../lib/pacientes";
+import { usePacientesStore } from "../stores/pacientesStore";
+
 import { extraerMensajeError } from "../lib/errorHandler";
 
 interface Props {
   paciente?: Paciente;
-  onGuardar: (paciente: Paciente) => void;
+  onGuardar: () => void;
   onCancelar?: () => void;
 }
 
@@ -19,6 +19,8 @@ export default function FormularioPaciente({
   onGuardar,
   onCancelar,
 }: Props) {
+  const crear = usePacientesStore((s) => s.crear);
+  const actualizar = usePacientesStore((s) => s.actualizar);
   const {
     register,
     handleSubmit,
@@ -40,10 +42,9 @@ export default function FormularioPaciente({
   async function guardar(datos: PacienteFormData) {
     try {
       const dto = { ...datos, telefono: datos.telefono || undefined };
-      const guardado = paciente
-        ? (await servicio.update(Number(paciente.id), dto)).data
-        : (await servicio.create(dto)).data.paciente;
-      onGuardar(presentarPaciente(guardado));
+      if (paciente) await actualizar(Number(paciente.id), dto);
+      else await crear(dto);
+      onGuardar();
       toast.success(paciente ? "Paciente actualizado" : "Paciente registrado");
       if (!paciente) reset();
     } catch (err: unknown) {
