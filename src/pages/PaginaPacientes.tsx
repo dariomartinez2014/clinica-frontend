@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useDebounce } from "../hooks/useDebounce";
+import { useEffect, useState } from "react";
 
 import FormularioPaciente from "../components/FormularioPaciente";
 import PacienteCard from "../components/PacienteCard";
@@ -14,7 +15,16 @@ export default function PaginaPacientes() {
   const cargando = usePacientesStore((s) => s.cargando);
   const error = usePacientesStore((s) => s.error);
   const cargar = usePacientesStore((s) => s.cargar);
+  const cancelarCarga = usePacientesStore((s) => s.cancelarCarga);
+  const pagina = usePacientesStore((s) => s.pagina);
+  const totalPaginas = usePacientesStore((s) => s.totalPaginas);
   const busqueda = useFiltrosStore((s) => s.queryPacientes);
+  const query = useDebounce(busqueda, 350);
+  const buscando = cargando || busqueda !== query;
+  useEffect(() => {
+    void cargar(query);
+    return cancelarCarga;
+  }, [query, cargar, cancelarCarga]);
   const especialidad = useFiltrosStore((s) => s.especialidadFiltro);
   const setEspecialidad = useFiltrosStore((s) => s.setEspecialidad);
   const resetFiltros = useFiltrosStore((s) => s.resetFiltros);
@@ -22,9 +32,6 @@ export default function PaginaPacientes() {
   const editando = pacientes.find((p) => p.id === editandoId);
   const filtrados = pacientes.filter(
     (paciente) =>
-      `${paciente.nombre} ${paciente.apellido} ${paciente.email}`
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()) &&
       (especialidad === "Todas" ||
         paciente.especialidadAsignada === especialidad),
   );
@@ -40,7 +47,7 @@ export default function PaginaPacientes() {
         </div>
         <button
           onClick={() => {
-            void cargar();
+            void cargar(query, pagina);
           }}
           disabled={cargando}
           className="rounded-lg border border-slate-300 bg-white px-4 py-2 disabled:opacity-50"
@@ -56,7 +63,7 @@ export default function PaginaPacientes() {
           <p>No se pudo completar la operación: {error}</p>
           <button
             onClick={() => {
-              void cargar();
+              void cargar(query, pagina);
             }}
             className="mt-3 rounded-lg border border-red-300 px-4 py-2"
           >
@@ -64,61 +71,91 @@ export default function PaginaPacientes() {
           </button>
         </div>
       )}
-      {cargando ? (
-        <Cargando />
-      ) : (
-        <>
-          <p className="mb-5 text-sm text-slate-600">
-            {total} paciente(s) registrado(s)
+      <>
+        <p className="mb-5 text-sm text-slate-600">
+          {total} paciente(s) registrado(s)
+        </p>
+        <FormularioPaciente
+          key={editando?.id ?? "nuevo"}
+          paciente={editando ?? undefined}
+          onGuardar={() => {
+            setEditandoId(null);
+            void cargar(query, pagina);
+          }}
+          onCancelar={editando ? () => setEditandoId(null) : undefined}
+        />
+        <BuscadorPacientes buscando={buscando} />
+        <label>
+          Especialidad{" "}
+          <select
+            value={especialidad}
+            onChange={(e) => setEspecialidad(e.target.value)}
+            className="m-2 rounded border p-2"
+          >
+            <option>Todas</option>
+            {[...new Set(pacientes.map((p) => p.especialidadAsignada))].map(
+              (e) => (
+                <option key={e}>{e}</option>
+              ),
+            )}
+          </select>
+        </label>
+        <button onClick={resetFiltros} className="rounded border px-3 py-2">
+          Limpiar filtros
+        </button>
+        <p className="mb-4 text-sm text-slate-600">
+          {buscando
+            ? "Buscando pacientes..."
+            : `${total} paciente(s) encontrado(s)`}
+        </p>
+        {!buscando && filtrados.length === 0 && (
+          <p className="text-slate-500">
+            No hay pacientes que coincidan con la búsqueda.
           </p>
-          <FormularioPaciente
-            key={editando?.id ?? "nuevo"}
-            paciente={editando ?? undefined}
-            onGuardar={() => setEditandoId(null)}
-            onCancelar={editando ? () => setEditandoId(null) : undefined}
-          />
-          <BuscadorPacientes />
-          <label>
-            Especialidad{" "}
-            <select
-              value={especialidad}
-              onChange={(e) => setEspecialidad(e.target.value)}
-              className="m-2 rounded border p-2"
+        )}
+        {cargando && <Cargando />}
+        <div
+          aria-busy={buscando}
+          className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+        >
+          {filtrados.map((paciente) => (
+            <PacienteCard
+              key={paciente.id}
+              paciente={paciente}
+              onEditar={() => setEditandoId(paciente.id)}
+            />
+          ))}
+        </div>
+        {totalPaginas > 1 && (
+          <nav aria-label="Páginas de pacientes" className="mt-5 flex gap-3">
+            <button
+              disabled={buscando || pagina <= 1}
+              onClick={() => {
+                void cargar(query, pagina - 1);
+              }}
+              className="rounded border p-2"
             >
-              <option>Todas</option>
-              {[...new Set(pacientes.map((p) => p.especialidadAsignada))].map(
-                (e) => (
-                  <option key={e}>{e}</option>
-                ),
-              )}
-            </select>
-          </label>
-          <button onClick={resetFiltros} className="rounded border px-3 py-2">
-            Limpiar filtros
-          </button>
-          <p className="mb-4 text-sm text-slate-600">
-            {filtrados.length} paciente(s) encontrado(s)
-          </p>
-          {filtrados.length === 0 && (
-            <p className="text-slate-500">
-              No hay pacientes que coincidan con la búsqueda.
-            </p>
-          )}
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filtrados.map((paciente) => (
-              <PacienteCard
-                key={paciente.id}
-                paciente={paciente}
-                onEditar={() => setEditandoId(paciente.id)}
-              />
-            ))}
-          </div>
-          <p className="mt-6 text-sm text-slate-500">
-            Los cambios se guardan en el servidor. No se pueden eliminar
-            pacientes con citas registradas.
-          </p>
-        </>
-      )}
+              Anterior
+            </button>
+            <span>
+              Página {pagina} de {totalPaginas}
+            </span>
+            <button
+              disabled={buscando || pagina >= totalPaginas}
+              onClick={() => {
+                void cargar(query, pagina + 1);
+              }}
+              className="rounded border p-2"
+            >
+              Siguiente
+            </button>
+          </nav>
+        )}
+        <p className="mt-6 text-sm text-slate-500">
+          Los cambios se guardan en el servidor. No se pueden eliminar pacientes
+          con citas registradas.
+        </p>
+      </>
     </main>
   );
 }

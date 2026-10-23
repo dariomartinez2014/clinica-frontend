@@ -1,27 +1,47 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { usePacientesStore } from "../stores/pacientesStore";
+import { useApi } from "../hooks/useApi";
+import { detalle } from "../services/pacientes";
+import { presentarPaciente } from "../lib/pacientes";
 import { useCitasStore } from "../stores/citasStore";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Cargando from "../components/Cargando";
 import BadgeEstado from "../components/BadgeEstado";
 import PaginaNotFound from "./PaginaNotFound";
 
 export default function PaginaDetallePaciente() {
-  const pacientes = usePacientesStore((s) => s.pacientes);
   const citas = useCitasStore((s) => s.citas);
   const cargando = useCitasStore((s) => s.cargando);
   const error = useCitasStore((s) => s.error);
-  const cargar = useCitasStore((s) => s.cargarPorPaciente);
+  const mostrarCitas = useCitasStore((s) => s.mostrarCitas);
   const seleccionar = useCitasStore((s) => s.seleccionar);
   const seleccionada = useCitasStore((s) => s.citaSeleccionada);
   // Buscar el paciente con el ID de la URL.
   const { id } = useParams();
   const navigate = useNavigate();
-  const paciente = pacientes.find((paciente) => paciente.id === id);
+  const obtener = useCallback(
+    async (signal: AbortSignal) => (await detalle(Number(id), signal)).data,
+    [id],
+  );
+  const {
+    data,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+    recargar,
+  } = useApi(obtener);
+  const paciente =
+    data && String(data.id) === id ? presentarPaciente(data) : null;
 
   useEffect(() => {
-    if (id) void cargar(Number(id));
-  }, [id, cargar]);
+    if (data && String(data.id) === id) mostrarCitas(data.citas);
+  }, [data, id, mostrarCitas]);
+  if (errorDetalle)
+    return (
+      <main className="p-6">
+        <p role="alert">{errorDetalle}</p>
+        <button onClick={recargar}>Reintentar</button>
+      </main>
+    );
+  if (cargandoDetalle) return <Cargando />;
   // Mostrar 404 si el paciente no existe.
   if (!paciente) return <PaginaNotFound />;
 

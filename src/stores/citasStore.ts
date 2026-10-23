@@ -6,6 +6,7 @@ import type { Cita, EstadoCita } from "../types/cita";
 import { extraerMensajeError } from "../lib/errorHandler";
 interface CitasState {
   citas: Cita[];
+  mostrarCitas: (citas: Cita[]) => void;
   citaSeleccionada: Cita | null;
   cargando: boolean;
   error: string | null;
@@ -46,6 +47,12 @@ export const useCitasStore = create<CitasState>()(
       };
       return {
         citas: [],
+        mostrarCitas: (citas) =>
+          set(
+            { citas, citaSeleccionada: null, error: null, cargando: false },
+            false,
+            "citas/mostrarCitas",
+          ),
         citaSeleccionada: null,
         cargando: false,
         error: null,

@@ -12,38 +12,63 @@ import { extraerMensajeError } from "../lib/errorHandler";
 interface PacientesState {
   pacientes: Paciente[];
   total: number;
+  pagina: number;
+  totalPaginas: number;
+  cancelarCarga: () => void;
   cargando: boolean;
   error: string | null;
-  cargar: (query?: string) => Promise<void>;
+  cargar: (query?: string, pagina?: number) => Promise<void>;
   crear: (datos: CrearPacienteDTO) => Promise<void>;
   actualizar: (id: number, datos: ActualizarPacienteDTO) => Promise<void>;
   eliminar: (id: number) => Promise<void>;
 }
 let consulta = 0;
+let controller: AbortController | null = null;
 export const usePacientesStore = create<PacientesState>()(
   devtools(
     (set) => ({
       pacientes: [],
       total: 0,
+      pagina: 1,
+      totalPaginas: 1,
+      cancelarCarga: () => {
+        ++consulta;
+        controller?.abort();
+        set({ cargando: false }, false, "pacientes/cancelarCarga");
+      },
       cargando: false,
       error: null,
-      cargar: async (query) => {
+      cargar: async (query, pagina = 1) => {
+        controller?.abort();
+        controller = new AbortController();
+        const signal = controller.signal;
         const actual = ++consulta;
         set({ cargando: true, error: null }, false, "pacientes/cargar");
         try {
-          const { data } = await servicio.list(undefined, query);
+          const { data } =
+            query === undefined
+              ? await servicio.list(signal)
+              : await servicio.buscar(query, pagina, signal);
           if (actual === consulta)
             set(
               {
                 pacientes: obtenerDatos(data).map(presentarPaciente),
                 total: obtenerTotal(data),
+                pagina:
+                  !Array.isArray(data) && "pagina" in data
+                    ? Number(data.pagina)
+                    : 1,
+                totalPaginas:
+                  !Array.isArray(data) && "totalPaginas" in data
+                    ? Number(data.totalPaginas)
+                    : 1,
                 cargando: false,
               },
               false,
               "pacientes/cargarExito",
             );
         } catch (err: unknown) {
-          if (actual === consulta)
+          if (actual === consulta && !signal.aborted)
             set(
               { error: extraerMensajeError(err), cargando: false },
               false,

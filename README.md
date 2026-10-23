@@ -22,6 +22,12 @@ Pacientes, citas y filtros ahora se comparten con Zustand. Los componentes usan 
 
 [Cambios, pruebas y pasos para DevTools](docs/mp2-dia3/README.md).
 
+## MP2 — Día 4
+
+El buscador espera 350 ms después de dejar de escribir antes de consultar pacientes. Tiene un spinner dentro del input y conserva la búsqueda al ir al detalle y volver. El backend permite buscar por nombre, apellido y correo, con resultados paginados.
+
+[Pruebas y GIF del buscador](docs/mp2-dia4/README.md).
+
 ## Cómo ejecutarlo
 
 Primero iniciar el backend de `clinica-salud-integral` en el puerto 3000. Después, en este proyecto:
