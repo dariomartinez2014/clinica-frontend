@@ -18,4 +18,4 @@
 
 ## Evidencia pendiente
 
-La validación visual con datos reales, el video/GIF y la captura de Redux DevTools requieren una sesión del backend con permisos adecuados. El MP1 encontrado exige GERENCIA para reportes y RECEPCIONISTA para GET /citas: hay que resolver ese conflicto sin omitir controles de acceso. No se considera completada la evidencia mientras falten estas verificaciones.
+La validación visual con datos reales, el video/GIF y la captura de Redux DevTools requieren una sesión del backend con permisos adecuados. El conflicto de permisos fue resuelto con autorización: GET /citas admite GERENCIA y RECEPCIONISTA. El backend pasó 16 comprobaciones reales de acceso y reportes, manteniendo prohibidas la creación y modificación para GERENCIA. Cambio del backend: rama feat/mp2-dia5-reportes-lectura, commit d9806bf. No se considera completada la evidencia mientras falten estas verificaciones.
