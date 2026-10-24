@@ -4,17 +4,10 @@ import type { RespuestaPaginada } from "../types/api";
 import type { Cita } from "../types/cita";
 import type { PacienteAPI } from "../lib/pacientes";
 
-export interface PacienteRegistro {
-  id: number;
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono?: string;
-  fechaNacimiento: string;
-}
 
-export type CrearPacienteDTO = Omit<PacienteRegistro, "id">;
-export type ActualizarPacienteDTO = Partial<CrearPacienteDTO>;
+
+import type { CrearPacienteDTO, ActualizarPacienteDTO } from '../types/dtos';
+export type { CrearPacienteDTO, ActualizarPacienteDTO } from '../types/dtos';
 
 export const list = (signal?: AbortSignal, query?: string) =>
   api.get<Coleccion<PacienteAPI>>("/pacientes", { signal, params: { query } });

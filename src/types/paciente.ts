@@ -13,3 +13,12 @@ export interface Paciente {
   ultimaCita: string;
   estado: EstadoPaciente;
 }
+
+export interface PacienteRegistro {
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono?: string;
+  fechaNacimiento: string;
+}

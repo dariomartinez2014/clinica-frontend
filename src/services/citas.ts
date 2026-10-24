@@ -1,10 +1,8 @@
 import { api } from "../lib/axios";
 import type { Cita, EstadoCita } from "../types/cita";
 
-export type CrearCitaDTO = Omit<
-  Cita,
-  "id" | "estado" | "paciente" | "motivo"
-> & { motivo?: string };
+import type { CrearCitaDTO } from '../types/dtos';
+export type { CrearCitaDTO } from '../types/dtos';
 export const create = (data: CrearCitaDTO) => api.post<Cita>("/citas", data);
 export const listAgenda = (medicoId: number, signal?: AbortSignal) =>
   api.get<Cita[]>(`/medicos/${medicoId}/citas`, { signal });

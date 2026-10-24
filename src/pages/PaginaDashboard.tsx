@@ -70,6 +70,7 @@ export default function PaginaDashboard() {
       >
         Ver Pacientes
       </Link>
+      <Link to="/reportes" className="ml-4 mt-8 inline-block font-medium text-emerald-700">Ver reportes completos →</Link>
     </main>
   );
 }

@@ -30,6 +30,7 @@ export default function Layout() {
           <NavLink to="/citas/nueva" className={claseEnlace}>
             Nueva cita
           </NavLink>
+          <NavLink to="/reportes" className={claseEnlace}>Reportes</NavLink>
         </nav>
         <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">
           MP2 · Datos reales

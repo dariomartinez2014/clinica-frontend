@@ -1,3 +1,4 @@
+import PaginaReportes from './pages/PaginaReportes';
 import PaginaCitas from "./pages/PaginaCitas";
 import PaginaLogin from "./pages/PaginaLogin";
 
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/" element={<PaginaDashboard />} />
         <Route path="/pacientes" element={<PaginaPacientes />} />
         <Route path="/pacientes/:id" element={<PaginaDetallePaciente />} />
+        <Route path="/reportes" element={<PaginaReportes />} />
         <Route path="/citas" element={<PaginaCitas />} />
         <Route path="/citas/nueva" element={<PaginaNuevaCita />} />
         <Route path="*" element={<PaginaNotFound />} />
