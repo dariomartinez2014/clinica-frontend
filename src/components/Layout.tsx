@@ -1,6 +1,13 @@
+import { useAuthStore } from "../stores/authStore";
 import { NavLink, Outlet } from "react-router-dom";
 
 export default function Layout() {
+  const usuario = useAuthStore((s) => s.usuario);
+  const logout = useAuthStore((s) => s.logout);
+  function cerrarSesion() {
+    logout();
+    window.location.replace("/login");
+  }
   // NavLink marca la sección actual.
   function claseEnlace({ isActive }: { isActive: boolean }) {
     return `block rounded-lg px-4 py-3 text-sm font-medium ${isActive ? "bg-emerald-100 text-emerald-800" : "text-slate-600 hover:bg-slate-100"}`;
@@ -14,6 +21,17 @@ export default function Layout() {
           Clínica Salud Integral
         </p>
         <p className="mt-1 text-sm text-slate-500">Panel de administración</p>
+        <div className="mt-4 rounded-lg bg-slate-50 p-3 text-sm">
+          <p className="font-medium">{usuario?.nombre}</p>
+          <p className="mt-1 text-xs text-slate-500">{usuario?.rol}</p>
+          <button
+            type="button"
+            onClick={cerrarSesion}
+            className="mt-3 font-medium text-emerald-700"
+          >
+            Cerrar sesión
+          </button>
+        </div>
         <nav
           aria-label="Navegación principal"
           className="mt-6 flex flex-wrap gap-2 md:flex-col"
@@ -30,7 +48,9 @@ export default function Layout() {
           <NavLink to="/citas/nueva" className={claseEnlace}>
             Nueva cita
           </NavLink>
-          <NavLink to="/reportes" className={claseEnlace}>Reportes</NavLink>
+          <NavLink to="/reportes" className={claseEnlace}>
+            Reportes
+          </NavLink>
         </nav>
         <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">
           MP2 · Datos reales

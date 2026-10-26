@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "test:stores": "node scripts/test-stores.mjs",
     "preview": "vite preview",
-    "test:reportes": "node scripts/test-reportes.mjs"
+    "test:reportes": "node scripts/test-reportes.mjs",
+    "test:auth": "node scripts/test-auth.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
