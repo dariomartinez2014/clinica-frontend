@@ -38,6 +38,6 @@ Continúa el PR #11 del Día 2, ya fusionado en main.
 
 ## Backend requerido
 
-El backend anterior no exponía el endpoint. La rama complementaria `feat/mp3-dia3-perfil-api` en `clinica_salud_integral` agrega la ruta protegida, persistencia de telefono/foto, validación de contenido y tamaño y login con el perfil actualizado. Aplicar su migración y regenerar Prisma antes de usarla.
+El backend anterior no exponía el endpoint. El [PR complementario #15](https://github.com/dariomartinez2014/clinica_salud_integral/pull/15), rama `feat/mp3-dia3-perfil-api`, en `clinica_salud_integral` agrega la ruta protegida, persistencia de telefono/foto, validación de contenido y tamaño y login con el perfil actualizado. Aplicar su migración y regenerar Prisma antes de usarla.
 
 Para la prueba aislada se usaron backend 5195 y frontend 5196/QA 5197. El puerto 5173 estaba ocupado por otra aplicación y no se modificó.
