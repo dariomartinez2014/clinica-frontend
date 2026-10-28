@@ -1,0 +1,35 @@
+{
+  "preflight": {
+    "status": 204,
+    "allowedHeaders": "authorization"
+  },
+  "api": "http://localhost:3000/api",
+  "checks": [
+    {
+      "endpoint": "/pacientes",
+      "status": 200,
+      "total": 3,
+      "cors": "http://localhost:5173"
+    },
+    {
+      "endpoint": "/medicos",
+      "status": 200,
+      "total": 7,
+      "cors": "http://localhost:5173"
+    },
+    {
+      "endpoint": "/citas?estado=Programada",
+      "status": 200,
+      "total": 1,
+      "cors": "http://localhost:5173"
+    },
+    {
+      "endpoint": "/citas?estado=Completada",
+      "status": 200,
+      "total": 0,
+      "cors": "http://localhost:5173"
+    }
+  ],
+  "withoutToken": 401,
+  "invalidState": 400
+}

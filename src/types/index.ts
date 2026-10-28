@@ -1,4 +1,4 @@
-// TIPOS: defino qué datos debe recibir cada tarjeta.
+// Datos de las métricas del dashboard.
 export type Tendencia = 'positiva' | 'negativa' | 'neutra';
 
 export interface Metrica {

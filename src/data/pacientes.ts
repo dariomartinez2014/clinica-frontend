@@ -1,6 +1,6 @@
 import type { Paciente } from '../types/paciente';
 
-// DATOS DE PRÁCTICA: los dejo fuera del componente y no dentro del JSX.
+// Datos de ejemplo del MP1.
 export const pacientesEjemplo: Paciente[] = [
     { id: 'PAC-001', nombre: 'Ana', apellido: 'López', email: 'ana.lopez@example.com', telefono: '0000-0001', especialidadAsignada: 'Medicina general', ultimaCita: '2026-10-10', estado: 'activo' },
     { id: 'PAC-002', nombre: 'Carlos', apellido: 'Pérez', email: 'carlos.perez@example.com', telefono: '0000-0002', especialidadAsignada: 'Cardiología', ultimaCita: '2026-10-09', estado: 'en_espera' },

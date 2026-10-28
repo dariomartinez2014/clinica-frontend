@@ -1,4 +1,4 @@
-// PROPS: activo indica si el sistema está operativo.
+// activo indica si el sistema está disponible.
 interface StatusBadgeProps {
   activo: boolean;
 }

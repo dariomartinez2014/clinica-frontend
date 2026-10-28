@@ -1,50 +1,66 @@
-# Clínica Salud Integral — Día 1
+# Clínica Salud Integral
 
-Dashboard de práctica con Vite, React, TypeScript y Tailwind CSS.
+Proyecto de práctica con React, TypeScript y Vite.
 
-## Ejecutar
+## MP2 — Día 1
+
+El dashboard y la lista de pacientes ahora cargan los datos del backend con Axios. Hay un spinner mientras carga, un mensaje si falla y un botón para reintentar.
+
+Axios agrega el token de sesión a las peticiones. Si el servidor responde 401, la app lleva al login.
+
+## MP2 — Día 2
+
+Ya se pueden registrar, editar y eliminar pacientes. Los formularios usan React Hook Form y Zod. Los avisos de éxito y error aparecen con react-hot-toast.
+
+La agenda médica cambia el estado de las citas con `useOptimistic`: el cambio se ve al instante y se revierte si falla la petición. También se pueden crear citas desde el formulario.
+
+[Pruebas y capturas del día 2](docs/mp2-dia2/README.md).
+
+## MP2 — Día 3
+
+Pacientes, citas y filtros ahora se comparten con Zustand. Los componentes usan selectores y las acciones tienen nombre para Redux DevTools. Las métricas y los médicos también tienen stores para evitar copias locales de datos de la API.
+
+[Cambios, pruebas y pasos para DevTools](docs/mp2-dia3/README.md).
+
+## MP2 — Día 4
+
+El buscador espera 350 ms después de dejar de escribir antes de consultar pacientes. Tiene un spinner dentro del input y conserva la búsqueda al ir al detalle y volver. El backend permite buscar por nombre, apellido y correo, con resultados paginados.
+
+[Pruebas y GIF del buscador](docs/mp2-dia4/README.md).
+
+## Cómo ejecutarlo
+
+Primero iniciar el backend de `clinica-salud-integral` en el puerto 3000. Después, en este proyecto:
 
 ```bash
 npm install
+```
+
+Copiar `.env.example` a `.env.local` y ejecutar:
+
+```bash
 npm run dev
 ```
 
-Abre la dirección indicada en la terminal. El dashboard es la pantalla inicial `/`.
+Abrir `http://localhost:5173/login` y entrar con una cuenta de recepción para gestionar pacientes y crear citas. Para cambiar estados, usar una cuenta de médico y elegir “Agenda médica” al iniciar sesión.
 
-## Archivos para estudiar
+[Explicación del día 1, pruebas y capturas](docs/mp2-dia-1/README.md).
 
-- `src/types/index.ts`: contrato `Metrica` y unión `Tendencia`.
-- `src/components/MetricCard.tsx`: recibe una métrica por props y usa `Record<Tendencia, string>` para elegir el color de su descripción.
-- `src/components/StatusBadge.tsx`: recibe `activo` y muestra el estado del sistema.
-- `src/pages/PaginaDashboard.tsx`: cuatro métricas, estados, botones de pacientes y mantenimiento.
-- `vite.config.ts` e `src/index.css`: integración de Tailwind.
+## Comprobaciones
 
-Los comentarios del código señalan qué hace cada parte. Las métricas son datos de ejemplo; no se guardan al recargar y no hay backend.
+```bash
+npm run build
+npm run lint
+npm run test:stores
+```
 
-## Validación del día 1
+Ambos comandos pasan.
 
-- `npm run build`: ejecuta TypeScript (`tsc -b`) y la compilación de Vite. Correcto.
-- `npm run lint`: correcto.
-- TypeScript estricto y sin `any` en el código de la aplicación.
-- En el navegador: pacientes 128 → 129 al pulsar + y 129 → 128 al pulsar −.
-- Mantenimiento: banner rojo y etiqueta “Modo Mantenimiento”; al desactivarlo desaparece el banner y vuelve “Sistema Operativo”.
-- El contador impide valores negativos.
+## Trabajos anteriores del MP1
 
-## Capturas
+- [Día 2: lista de pacientes](docs/dia-2/README.md)
+- [Día 3: filtros y acciones locales](docs/dia-3/README.md)
+- [Día 4: formulario de citas](docs/dia-4/README.md)
+- [Día 5: navegación y recorrido de la app](docs/dia-5/README.md)
 
-![Dashboard](docs/dashboard.png)
-
-![Mantenimiento](docs/dashboard-mantenimiento.png)
-
-## Entrega
-
-Rama: `feat/dia-1-dashboard`. Pull Request hacia `main`; esperar revisión antes del merge.
-
-## Referencias
-
-- https://vite.dev/guide/
-- https://tailwindcss.com/docs/installation/using-vite
-
-## Día 2 — Pacientes
-
-La página /pacientes contiene cinco registros de ejemplo, BadgeEstado, PacienteCard y BuscadorPacientes. El buscador tiene estado local y todavía no filtra; filtros y CRUD quedan para el día 3. [Prompt, análisis y capturas del antes y después](docs/dia-2/README.md).
+Estas páginas corresponden a las prácticas anteriores, cuando se usaban datos de ejemplo.
