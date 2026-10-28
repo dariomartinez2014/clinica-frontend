@@ -49,9 +49,12 @@ export default function Layout() {
       {/* Aquí se muestra la página de cada ruta. */}
       <div className="md:ml-60">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-4" aria-label="Sesión activa">
-          <div>
-            <p className="font-semibold">{usuario?.nombre}</p>
+          <div className="flex items-center gap-3">
+            {usuario?.foto && <img src={usuario.foto} alt="Tu foto de perfil" className="size-10 rounded-full object-cover" />}
+            <div>
+            <NavLink to="/perfil" className="font-semibold text-emerald-800 underline-offset-4 hover:underline" aria-label={`Editar perfil de ${usuario?.nombre ?? "usuario"}`}>{usuario?.nombre}</NavLink>
             <p className="mt-1 text-xs text-slate-500">{usuario?.rol}</p>
+            </div>
           </div>
           <button
             type="button"

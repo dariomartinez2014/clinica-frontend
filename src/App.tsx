@@ -1,3 +1,4 @@
+import PaginaPerfil from "./pages/PaginaPerfil";
 import RutaProtegida from "./components/RutaProtegida";
 import PaginaSinAcceso from "./pages/PaginaSinAcceso";
 import PaginaReportes from "./pages/PaginaReportes";
@@ -20,6 +21,7 @@ export default function App() {
       <Route element={<RutaProtegida />}>
         <Route element={<Layout />}>
           <Route path="/" element={<PaginaDashboard />} />
+          <Route path="/perfil" element={<PaginaPerfil />} />
           <Route path="/pacientes" element={<PaginaPacientes />} />
           <Route path="/pacientes/:id" element={<PaginaDetallePaciente />} />
           <Route path="/sin-acceso" element={<PaginaSinAcceso />} />
