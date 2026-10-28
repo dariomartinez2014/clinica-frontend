@@ -1,12 +1,13 @@
 import { useAuthStore } from "../stores/authStore";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 export default function Layout() {
   const usuario = useAuthStore((s) => s.usuario);
   const logout = useAuthStore((s) => s.logout);
+  const navigate = useNavigate();
   function cerrarSesion() {
     logout();
-    window.location.replace("/login");
+    navigate("/login", { replace: true });
   }
   // NavLink marca la sección actual.
   function claseEnlace({ isActive }: { isActive: boolean }) {
@@ -21,17 +22,6 @@ export default function Layout() {
           Clínica Salud Integral
         </p>
         <p className="mt-1 text-sm text-slate-500">Panel de administración</p>
-        <div className="mt-4 rounded-lg bg-slate-50 p-3 text-sm">
-          <p className="font-medium">{usuario?.nombre}</p>
-          <p className="mt-1 text-xs text-slate-500">{usuario?.rol}</p>
-          <button
-            type="button"
-            onClick={cerrarSesion}
-            className="mt-3 font-medium text-emerald-700"
-          >
-            Cerrar sesión
-          </button>
-        </div>
         <nav
           aria-label="Navegación principal"
           className="mt-6 flex flex-wrap gap-2 md:flex-col"
@@ -58,6 +48,19 @@ export default function Layout() {
       </aside>
       {/* Aquí se muestra la página de cada ruta. */}
       <div className="md:ml-60">
+        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-4" aria-label="Sesión activa">
+          <div>
+            <p className="font-semibold">{usuario?.nombre}</p>
+            <p className="mt-1 text-xs text-slate-500">{usuario?.rol}</p>
+          </div>
+          <button
+            type="button"
+            onClick={cerrarSesion}
+            className="rounded-lg border border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50"
+          >
+            Cerrar sesión
+          </button>
+        </header>
         <Outlet />
       </div>
     </div>
