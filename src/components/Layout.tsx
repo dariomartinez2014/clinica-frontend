@@ -32,6 +32,7 @@ export default function Layout() {
           <NavLink to="/pacientes" className={claseEnlace}>
             Pacientes
           </NavLink>
+          <NavLink to="/historial" className={claseEnlace}>Historial de citas</NavLink>
           <NavLink to="/citas" end className={claseEnlace}>
             Agenda médica
           </NavLink>
@@ -43,7 +44,7 @@ export default function Layout() {
           </NavLink>
         </nav>
         <p className="mt-6 text-xs text-slate-400 md:absolute md:bottom-6">
-          MP2 · Datos reales
+          MP3 · Clínica
         </p>
       </aside>
       {/* Aquí se muestra la página de cada ruta. */}

@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useDashboardStore } from "../stores/dashboardStore";
 import { Link } from "react-router-dom";
 import MetricCard from "../components/MetricCard";
-import Cargando from "../components/Cargando";
+import SkeletonMetricCard from "../shared/components/ui/SkeletonMetricCard";
+import AlertaBanner from "../shared/components/ui/AlertaBanner";
 
 import type { Metrica } from "../types";
 
@@ -37,26 +38,9 @@ export default function PaginaDashboard() {
         Resumen general de la clínica con datos reales.
       </p>
       {cargando ? (
-        <Cargando />
+        <div role="status" aria-label="Cargando métricas" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{[0,1,2,3].map(i => <SkeletonMetricCard key={i} />)}</div>
       ) : error ? (
-        <div
-          role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 p-5 text-red-800"
-        >
-          <p>
-            No se pudieron cargar las métricas. Comprueba la conexión con el
-            servidor.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              void cargar();
-            }}
-            className="mt-3 rounded-lg border border-red-300 px-4 py-2"
-          >
-            Reintentar
-          </button>
-        </div>
+        <AlertaBanner tipo="error" mensaje={`No se pudieron cargar las métricas: ${error}`} accion={{ label: "Reintentar", onClick: () => { void cargar(); } }} />
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {metricas.map((metrica) => (

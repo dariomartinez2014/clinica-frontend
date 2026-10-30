@@ -14,7 +14,7 @@ const configuracionEstado: Record<EstadoPaciente, { texto: string; color: string
 };
 
 export default function BadgeEstado({ estado }: BadgeEstadoProps) {
-  const configuracion = configuracionEstado[estado];
+  const configuracion = configuracionEstado[estado] ?? configuracionEstado.sin_datos;
   return (
     <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${configuracion.color}`}>
       {configuracion.texto}
