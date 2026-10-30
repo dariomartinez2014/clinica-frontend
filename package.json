@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "test:reportes": "node scripts/test-reportes.mjs",
     "test:auth": "node scripts/test-auth.mjs",
-    "test:rutas": "node scripts/test-rutas.mjs"
+    "test:rutas": "node scripts/test-rutas.mjs",
+    "test:perfil": "node scripts/test-perfil.mjs",
+    "test:mp3": "node scripts/test-mp3.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

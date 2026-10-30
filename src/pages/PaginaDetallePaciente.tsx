@@ -1,10 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../hooks/useApi";
 import { detalle } from "../services/pacientes";
 import { presentarPaciente } from "../lib/pacientes";
 import { useCitasStore } from "../stores/citasStore";
 import { useCallback, useEffect } from "react";
-import Cargando from "../components/Cargando";
+import { SkeletonDetalle, SkeletonCitaRow } from "../shared/components/ui/Skeletons";
+import EstadoVacio from "../shared/components/ui/EstadoVacio";
+import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import BadgeEstado from "../components/BadgeEstado";
 import PaginaNotFound from "./PaginaNotFound";
 
@@ -37,11 +39,11 @@ export default function PaginaDetallePaciente() {
   if (errorDetalle)
     return (
       <main className="p-6">
-        <p role="alert">{errorDetalle}</p>
+        <AlertaBanner tipo="error" mensaje={errorDetalle} />
         <button onClick={recargar}>Reintentar</button>
       </main>
     );
-  if (cargandoDetalle) return <Cargando />;
+  if (cargandoDetalle) return <SkeletonDetalle />;
   // Mostrar 404 si el paciente no existe.
   if (!paciente) return <PaginaNotFound />;
 
@@ -113,11 +115,11 @@ export default function PaginaDetallePaciente() {
         </dl>
       </section>
       <section className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-        <h2 className="text-xl font-bold">Citas del paciente</h2>
+        <h2 className="text-xl font-bold">Citas del paciente</h2><Link className="my-4 inline-block text-emerald-700 underline" to={`/historial?paciente=${id}&pagina=1&estado=Todos`}>Ver historial paginado</Link>
         {cargando ? (
-          <Cargando />
+          <div role="status" aria-label="Cargando citas"><SkeletonCitaRow /></div>
         ) : error ? (
-          <p role="alert">{error}</p>
+          <AlertaBanner tipo="error" mensaje={error} />
         ) : (
           citas.map((cita) => (
             <button
@@ -130,7 +132,7 @@ export default function PaginaDetallePaciente() {
           ))
         )}
         {!cargando && !error && citas.length === 0 && (
-          <p>No hay citas registradas.</p>
+          <EstadoVacio titulo="No hay citas registradas" accion={{ label: "Agendar cita", onClick: () => navigate("/citas/nueva") }} />
         )}
         {seleccionada && (
           <p role="status">

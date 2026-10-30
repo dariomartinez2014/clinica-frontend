@@ -64,3 +64,8 @@ Ambos comandos pasan.
 - [Día 5: navegación y recorrido de la app](docs/dia-5/README.md)
 
 Estas páginas corresponden a las prácticas anteriores, cuando se usaban datos de ejemplo.
+
+
+## MP3 — Día 3
+
+Perfil con Zod, foto con previsualización local y actualización del usuario persistido. [Pruebas y capturas](docs/mp3-dia3/README.md).
