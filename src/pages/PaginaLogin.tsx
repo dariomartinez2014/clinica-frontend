@@ -7,12 +7,12 @@ import toast from "react-hot-toast";
 import { loginSchema } from "../schemas/loginSchema";
 import type { LoginFormData } from "../schemas/loginSchema";
 import { login } from "../services/auth";
-import { useAuthStore } from "../stores/authStore";
+import { useAuth } from "../hooks/useAuth";
 import { extraerMensajeError } from "../lib/errorHandler";
 export default function PaginaLogin() {
   const navigate = useNavigate();
-  const setAuth = useAuthStore((s) => s.login);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // El hook expone las acciones de sesión sin importar Zustand en la página.
+  const { login: setAuth, isAuthenticated } = useAuth();
   const [errorServidor, setErrorServidor] = useState("");
   const {
     register,

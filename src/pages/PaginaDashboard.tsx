@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useDashboardStore } from "../stores/dashboardStore";
+import { useDashboard } from "../hooks/useDashboard";
 import { Link } from "react-router-dom";
 import MetricCard from "../components/MetricCard";
 import SkeletonMetricCard from "../shared/components/ui/SkeletonMetricCard";
@@ -8,13 +7,8 @@ import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import type { Metrica } from "../types";
 
 export default function PaginaDashboard() {
-  const totales = useDashboardStore((s) => s.totales);
-  const cargando = useDashboardStore((s) => s.cargando);
-  const error = useDashboardStore((s) => s.error);
-  const cargar = useDashboardStore((s) => s.cargar);
-  useEffect(() => {
-    void cargar();
-  }, [cargar]);
+  // Recibo las métricas listas y conservo aquí su presentación.
+  const { totales, cargando, error, cargar } = useDashboard();
   const titulos = [
     "Pacientes",
     "Médicos",

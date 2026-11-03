@@ -1,9 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useApi } from "../hooks/useApi";
-import { detalle } from "../services/pacientes";
-import { presentarPaciente } from "../lib/pacientes";
-import { useCitasStore } from "../stores/citasStore";
-import { useCallback, useEffect } from "react";
+import { useDetallePaciente } from "../features/pacientes/hooks/useDetallePaciente";
 import { SkeletonDetalle, SkeletonCitaRow } from "../shared/components/ui/Skeletons";
 import EstadoVacio from "../shared/components/ui/EstadoVacio";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
@@ -11,31 +7,11 @@ import BadgeEstado from "../components/BadgeEstado";
 import PaginaNotFound from "./PaginaNotFound";
 
 export default function PaginaDetallePaciente() {
-  const citas = useCitasStore((s) => s.citas);
-  const cargando = useCitasStore((s) => s.cargando);
-  const error = useCitasStore((s) => s.error);
-  const mostrarCitas = useCitasStore((s) => s.mostrarCitas);
-  const seleccionar = useCitasStore((s) => s.seleccionar);
-  const seleccionada = useCitasStore((s) => s.citaSeleccionada);
-  // Buscar el paciente con el ID de la URL.
   const { id } = useParams();
   const navigate = useNavigate();
-  const obtener = useCallback(
-    async (signal: AbortSignal) => (await detalle(Number(id), signal)).data,
-    [id],
-  );
-  const {
-    data,
-    cargando: cargandoDetalle,
-    error: errorDetalle,
-    recargar,
-  } = useApi(obtener);
-  const paciente =
-    data && String(data.id) === id ? presentarPaciente(data) : null;
-
-  useEffect(() => {
-    if (data && String(data.id) === id) mostrarCitas(data.citas);
-  }, [data, id, mostrarCitas]);
+  // El hook reúne el expediente y sus citas para que esta página solo los dibuje.
+  const { citas, cargando, error, seleccionar, seleccionada, paciente,
+    cargandoDetalle, errorDetalle, recargar } = useDetallePaciente(id);
   if (errorDetalle)
     return (
       <main className="p-6">

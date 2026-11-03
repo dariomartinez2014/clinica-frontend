@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { usePacientesStore } from "../stores/pacientesStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
 import { extraerMensajeError } from "../lib/errorHandler";
 import ModalConfirmacion from "../shared/components/ui/ModalConfirmacion";
 import { Link } from "react-router-dom";
@@ -17,7 +17,8 @@ export default function PacienteCard({
   paciente,
   onEditar,
 }: PacienteCardProps) {
-  const eliminar = usePacientesStore((s) => s.eliminar);
+  // La tarjeta usa la acción compartida sin volver a consultar pacientes.
+  const { eliminar } = usePacientes({ cargaInicial: false });
   const [confirmando, setConfirmando] = useState(false);
   const [eliminando, setEliminando] = useState(false);
   async function confirmar() {
@@ -49,11 +50,11 @@ export default function PacienteCard({
       </div>
       <dl className="mt-5 space-y-3 text-sm">
         <div>
-          <dt className="text-slate-500">Correo electrónico</dt>
+          <dt className="text-slate-500">Correo electrÃ³nico</dt>
           <dd className="break-all">{paciente.email}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Teléfono</dt>
+          <dt className="text-slate-500">TelÃ©fono</dt>
           <dd>{paciente.telefono}</dd>
         </div>
         <div>
@@ -61,12 +62,12 @@ export default function PacienteCard({
           <dd>{paciente.especialidadAsignada}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Última cita</dt>
+          <dt className="text-slate-500">Ãšltima cita</dt>
           <dd>
             {paciente.ultimaCita ? (
               <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time>
             ) : (
-              "Sin información"
+              "Sin informaciÃ³n"
             )}
           </dd>
         </div>
@@ -93,7 +94,7 @@ export default function PacienteCard({
         to={`/pacientes/${paciente.id}`}
         className="mt-5 inline-block text-sm font-semibold text-emerald-700 hover:underline"
       >
-        Ver detalle →
+        Ver detalle â†’
       </Link>
       {confirmando && (
         <ModalConfirmacion
@@ -101,11 +102,11 @@ export default function PacienteCard({
           textoConfirmar="Eliminar paciente"
           textoCargando="Eliminando..."
           mensaje={
-            "¿Eliminar a " +
+            "Â¿Eliminar a " +
             paciente.nombre +
             " " +
             paciente.apellido +
-            "? Esta acción no se puede deshacer."
+            "? Esta acciÃ³n no se puede deshacer."
           }
           cargando={eliminando}
           onCancelar={() => setConfirmando(false)}

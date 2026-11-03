@@ -1,12 +1,11 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { citaSchema } from "../schemas/citaSchema";
 import type { CitaFormData } from "../schemas/citaSchema";
 import { useMedicos } from "../hooks/useMedicos";
-import { usePacientesStore } from "../stores/pacientesStore";
-import { useCitasStore } from "../stores/citasStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
+import { useCitas } from "../features/citas/hooks/useCitas";
 
 import { extraerMensajeError } from "../lib/errorHandler";
 
@@ -19,11 +18,9 @@ export default function FormularioCita() {
     error: errorMedicos,
     reintentar,
   } = useMedicos();
-  const pacientes = usePacientesStore((s) => s.pacientes);
-  const cargando = usePacientesStore((s) => s.cargando);
-  const error = usePacientesStore((s) => s.error);
-  const cargar = usePacientesStore((s) => s.cargar);
-  const agregarCita = useCitasStore((s) => s.agregarCita);
+  // El hook carga las opciones completas; el formulario solo registra la cita.
+  const { pacientes, cargando, error, cargar } = usePacientes({ todos: true });
+  const { agregarCita } = useCitas();
   const {
     register,
     handleSubmit,
@@ -39,9 +36,6 @@ export default function FormularioCita() {
       motivo: "",
     },
   });
-  useEffect(() => {
-    void cargar();
-  }, [cargar]);
   async function guardar(datos: CitaFormData) {
     try {
       await agregarCita({
@@ -107,17 +101,17 @@ export default function FormularioCita() {
           )}
         </div>
         <div className="sm:col-span-2">
-          <label htmlFor="cita-medico">Médico</label>
+          <label htmlFor="cita-medico">MÃ©dico</label>
           <select
             id="cita-medico"
             {...register("medicoId")}
             className={campo}
             aria-invalid={!!errors.medicoId}
           >
-            <option value="">Selecciona un médico</option>
+            <option value="">Selecciona un mÃ©dico</option>
             {medicos.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.nombre} — {m.especialidad} (ID {m.id})
+                {m.nombre} â€” {m.especialidad} (ID {m.id})
               </option>
             ))}
           </select>
@@ -175,7 +169,7 @@ export default function FormularioCita() {
       </fieldset>
       {(!pacientes.length || !medicos.length) && (
         <p className="mt-4 text-amber-800">
-          Necesitas al menos un paciente y un médico registrados.
+          Necesitas al menos un paciente y un mÃ©dico registrados.
         </p>
       )}
       <button

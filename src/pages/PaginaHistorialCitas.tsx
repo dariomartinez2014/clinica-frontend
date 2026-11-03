@@ -1,36 +1,13 @@
-import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { detalle } from "../services/pacientes";
-import { useApi } from "../hooks/useApi";
+import { useNavigate } from "react-router-dom";
+import { useHistorialCitas } from "../features/citas/hooks/useHistorialCitas";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import EstadoVacio from "../shared/components/ui/EstadoVacio";
 import SkeletonCitaRow from "../shared/components/ui/SkeletonCitaRow";
-import type { Cita } from "../types/cita";
-import { paginarCitas } from "../lib/historial";
-
 export default function PaginaHistorialCitas() {
-  const [params, setParams] = useSearchParams();
-  const pacienteId = Number(params.get("paciente"));
-  const valido = Number.isInteger(pacienteId) && pacienteId > 0 && pacienteId <= 2147483647;
-  const [entrada, setEntrada] = useState(params.get("paciente") ?? "");
-  const estadoParam = params.get("estado") ?? "Todos";
-  const estado = ["Todos", "PROGRAMADA", "COMPLETADA", "CANCELADA"].includes(estadoParam) ? estadoParam : "Todos";
-  const numero = Number(params.get("pagina") ?? 1);
   const navigate = useNavigate();
-  const obtener = useCallback(async (signal: AbortSignal): Promise<Cita[]> => valido ? (await detalle(pacienteId, signal)).data.citas : [], [pacienteId, valido]);
-  const { data, cargando, error, recargar } = useApi(obtener);
-  const { citas, pagina, totalPaginas, total } = paginarCitas(data ?? [], estado, numero);
-  useEffect(() => {
-    if (valido && data && !cargando && (params.get("pagina") !== String(pagina) || params.get("estado") !== estado)) {
-      const siguientes = new URLSearchParams(params);
-      siguientes.set("pagina", String(pagina)); siguientes.set("estado", estado);
-      setParams(siguientes, { replace: true });
-    }
-  }, [valido, data, cargando, pagina, estado, params, setParams]);
-  function cambiar(pagina: number, filtro = estado) {
-    setParams({ paciente: String(pacienteId), estado: filtro, pagina: String(pagina) });
-  }
-  function consultar(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setParams({ paciente: entrada, estado: "Todos", pagina: "1" }); }
+  // La página recibe el historial preparado y las acciones de navegación.
+  const { entrada, setEntrada, estado, valido, cargando, error, recargar,
+    citas, pagina, totalPaginas, total, cambiar, consultar } = useHistorialCitas();
   return <main className="mx-auto max-w-6xl px-6 py-8">
     <h1 className="text-3xl font-bold">Historial de citas</h1><p className="mt-2 text-slate-600">Consulta las citas de un paciente y comparte la página y el filtro mediante la URL.</p>
     <form onSubmit={consultar} className="my-6 flex flex-wrap items-end gap-3"><label className="text-sm font-medium">ID del paciente<input aria-label="ID del paciente" type="number" min="1" max="2147483647" step="1" required value={entrada} onChange={event => setEntrada(event.target.value)} className="mt-1 block rounded-lg border border-slate-300 px-3 py-2" /></label><button className="rounded-lg bg-emerald-700 px-4 py-2 text-white">Consultar historial</button></form>

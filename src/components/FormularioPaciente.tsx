@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { pacienteSchema } from "../schemas/pacienteSchema";
 import type { PacienteFormData } from "../schemas/pacienteSchema";
 import type { Paciente } from "../types/paciente";
-import { usePacientesStore } from "../stores/pacientesStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
 
 import { extraerMensajeError } from "../lib/errorHandler";
 
@@ -19,8 +19,8 @@ export default function FormularioPaciente({
   onGuardar,
   onCancelar,
 }: Props) {
-  const crear = usePacientesStore((s) => s.crear);
-  const actualizar = usePacientesStore((s) => s.actualizar);
+  // Uso las acciones sin iniciar otra carga encima de la lista abierta.
+  const { crear, actualizar } = usePacientes({ cargaInicial: false });
   const {
     register,
     handleSubmit,
@@ -60,7 +60,7 @@ export default function FormularioPaciente({
     { name: "nombre", label: "Nombre", type: "text" },
     { name: "apellido", label: "Apellido", type: "text" },
     { name: "email", label: "Email", type: "email" },
-    { name: "telefono", label: "Teléfono (opcional)", type: "tel" },
+    { name: "telefono", label: "TelÃ©fono (opcional)", type: "tel" },
     { name: "fechaNacimiento", label: "Fecha de nacimiento", type: "date" },
   ];
   return (
@@ -121,7 +121,7 @@ export default function FormularioPaciente({
             disabled={isSubmitting}
             className="rounded-lg border border-slate-300 px-4 py-2"
           >
-            Cancelar edición
+            Cancelar ediciÃ³n
           </button>
         )}
       </div>

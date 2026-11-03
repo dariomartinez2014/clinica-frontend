@@ -1,5 +1,4 @@
-import { useDebounce } from "../hooks/useDebounce";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import FormularioPaciente from "../components/FormularioPaciente";
 import PacienteCard from "../components/PacienteCard";
@@ -8,36 +7,16 @@ import SkeletonPacienteRow from "../shared/components/ui/SkeletonPacienteRow";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import EstadoVacio from "../shared/components/ui/EstadoVacio";
 
-import { usePacientesStore } from "../stores/pacientesStore";
-import { useFiltrosStore } from "../stores/filtrosStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
 
 export default function PaginaPacientes() {
-  const pacientes = usePacientesStore((s) => s.pacientes);
-  const total = usePacientesStore((s) => s.total);
-  const cargando = usePacientesStore((s) => s.cargando);
-  const error = usePacientesStore((s) => s.error);
-  const cargar = usePacientesStore((s) => s.cargar);
-  const cancelarCarga = usePacientesStore((s) => s.cancelarCarga);
-  const pagina = usePacientesStore((s) => s.pagina);
-  const totalPaginas = usePacientesStore((s) => s.totalPaginas);
-  const busqueda = useFiltrosStore((s) => s.queryPacientes);
-  const query = useDebounce(busqueda, 350);
-  const buscando = cargando || busqueda !== query;
-  useEffect(() => {
-    void cargar(query);
-    return cancelarCarga;
-  }, [query, cargar, cancelarCarga]);
-  const especialidad = useFiltrosStore((s) => s.especialidadFiltro);
-  const setEspecialidad = useFiltrosStore((s) => s.setEspecialidad);
-  const resetFiltros = useFiltrosStore((s) => s.resetFiltros);
+  // El hook prepara los datos; aquí solo manejo el formulario y la vista.
+  const { pacientes, total, pagina, totalPaginas, cargando, error, cargar,
+    query, buscando, especialidad, setEspecialidad, resetFiltros, filtrados } = usePacientes();
   const [abrirFormulario, setAbrirFormulario] = useState(false);
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const editando = pacientes.find((p) => p.id === editandoId);
-  const filtrados = pacientes.filter(
-    (paciente) =>
-      (especialidad === "Todas" ||
-        paciente.especialidadAsignada === especialidad),
-  );
+
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">

@@ -8,12 +8,12 @@ import InputFotoPerfil from "../components/InputFotoPerfil";
 import { perfilSchema } from "../schemas/perfilSchema";
 import type { PerfilFormData } from "../schemas/perfilSchema";
 import { actualizarPerfil } from "../services/perfil";
-import { useAuthStore } from "../stores/authStore";
+import { useAuth } from "../hooks/useAuth";
 import { extraerMensajeError } from "../lib/errorHandler";
 
 export default function PaginaPerfil() {
-  const usuario = useAuthStore((s) => s.usuario);
-  const actualizarUsuario = useAuthStore((s) => s.actualizarUsuario);
+  // Uso el hook para leer y actualizar la sesión desde el perfil.
+  const { usuario, actualizarUsuario, obtenerToken } = useAuth();
   const [archivoFoto, setArchivoFoto] = useState<File | null>(null);
   const [versionFoto, setVersionFoto] = useState(0);
   const [guardado, setGuardado] = useState(false);
@@ -23,7 +23,7 @@ export default function PaginaPerfil() {
     defaultValues: { nombre: usuario?.nombre ?? "", email: usuario?.email ?? "", telefono: usuario?.telefono ?? "" },
   });
   async function onSubmit(datos: PerfilFormData) {
-    const token = useAuthStore.getState().token;
+    const token = obtenerToken();
     const formData = new FormData();
     formData.append("nombre", datos.nombre);
     formData.append("email", datos.email);
@@ -34,7 +34,7 @@ export default function PaginaPerfil() {
     try {
       const actualizado = await actualizarPerfil(formData);
       // Una petición pendiente no debe restaurar datos después de cerrar sesión.
-      if (useAuthStore.getState().token !== token) return;
+      if (obtenerToken() !== token) return;
       actualizarUsuario(actualizado);
       reset({ nombre: actualizado.nombre, email: actualizado.email, telefono: actualizado.telefono ?? "" });
       setArchivoFoto(null); setVersionFoto((n) => n + 1);

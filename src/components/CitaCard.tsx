@@ -2,13 +2,13 @@ import ModalConfirmacion from "../shared/components/ui/ModalConfirmacion";
 import { useOptimistic, useTransition, useState } from "react";
 import toast from "react-hot-toast";
 import type { Cita, EstadoCita } from "../types/cita";
-import { useCitasStore } from "../stores/citasStore";
+import { useCitas } from "../features/citas/hooks/useCitas";
 import { extraerMensajeError } from "../lib/errorHandler";
 
 export default function CitaCard({ cita }: { cita: Cita }) {
   const [pendiente, setPendiente] = useState<Exclude<EstadoCita, "PROGRAMADA"> | null>(null);
-  const actualizarEstado = useCitasStore((s) => s.actualizarEstado);
-  const seleccionar = useCitasStore((s) => s.seleccionar);
+  // Reutilizo las acciones de citas y mantengo aquí la confirmación visual.
+  const { actualizarEstado, seleccionar } = useCitas();
   const [estado, mostrarEstado] = useOptimistic(
     cita.estado,
     (_actual, siguiente: EstadoCita) => siguiente,
@@ -88,7 +88,7 @@ export default function CitaCard({ cita }: { cita: Cita }) {
           Guardando cambio...
         </p>
       )}
-      {pendiente && <ModalConfirmacion titulo="Cambiar estado de cita" mensaje={`¿Marcar la cita #${cita.id} como ${pendiente.toLowerCase()}?`} cargando={guardando} textoConfirmar="Confirmar cambio" textoCargando="Guardando..." onCancelar={() => setPendiente(null)} onConfirmar={() => cambiar(pendiente)} />}
+      {pendiente && <ModalConfirmacion titulo="Cambiar estado de cita" mensaje={`Â¿Marcar la cita #${cita.id} como ${pendiente.toLowerCase()}?`} cargando={guardando} textoConfirmar="Confirmar cambio" textoCargando="Guardando..." onCancelar={() => setPendiente(null)} onConfirmar={() => cambiar(pendiente)} />}
     </article>
   );
 }

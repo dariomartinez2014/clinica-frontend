@@ -1,8 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 
-import { useCitasStore } from "../stores/citasStore";
-import { useFiltrosStore } from "../stores/filtrosStore";
+import { useCitas } from "../features/citas/hooks/useCitas";
 
 import CitaCard from "../components/CitaCard";
 import SkeletonCitaRow from "../shared/components/ui/SkeletonCitaRow";
@@ -11,13 +10,8 @@ import EstadoVacio from "../shared/components/ui/EstadoVacio";
 import { useNavigate } from "react-router-dom";
 
 export default function PaginaCitas() {
-  const citas = useCitasStore((s) => s.citas);
-  const cargando = useCitasStore((s) => s.cargando);
-  const error = useCitasStore((s) => s.error);
-  const cargarPorMedico = useCitasStore((s) => s.cargarPorMedico);
-  const seleccionada = useCitasStore((s) => s.citaSeleccionada);
-  const estadoFiltro = useFiltrosStore((s) => s.estadoCitaFiltro);
-  const setEstado = useFiltrosStore((s) => s.setEstadoCita);
+  // La agenda recibe datos y acciones sin suscribirse al store directamente.
+  const { citas, cargando, error, cargarPorMedico, seleccionada, estadoFiltro, setEstado } = useCitas();
   const [medicoId, setMedicoId] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [consultado, setConsultado] = useState(false);
