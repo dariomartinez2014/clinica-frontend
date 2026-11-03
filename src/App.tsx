@@ -1,11 +1,13 @@
-import { type ReactNode } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorBoundary from "./shared/components/ui/ErrorBoundary";
 import PaginaHistorialCitas from "./pages/PaginaHistorialCitas";
-import PaginaPerfil from "./pages/PaginaPerfil";
+import { SkeletonFormulario } from "./shared/components/ui/Skeletons";
+const PaginaPerfil = lazy(() => import("./pages/PaginaPerfil"));
 import RutaProtegida from "./components/RutaProtegida";
 import PaginaSinAcceso from "./pages/PaginaSinAcceso";
-import PaginaReportes from "./pages/PaginaReportes";
+import { SkeletonReportes } from "./shared/components/ui/Skeletons";
+const PaginaReportes = lazy(() => import("./pages/PaginaReportes"));
 import PaginaCitas from "./pages/PaginaCitas";
 import PaginaLogin from "./pages/PaginaLogin";
 
@@ -26,16 +28,16 @@ export default function App() {
   // Layout es el padre y Outlet muestra la página que corresponde.
   return (
     <Routes>
-      <Route path="/login" element={<PaginaLogin />} />
+      <Route path="/login" element={<Seccion nombre="el inicio de sesión"><PaginaLogin /></Seccion>} />
       <Route element={<RutaProtegida />}>
         <Route element={<Layout />}>
           <Route path="/" element={<Seccion nombre="el dashboard"><PaginaDashboard /></Seccion>} />
-          <Route path="/perfil" element={<Seccion nombre="el perfil"><PaginaPerfil /></Seccion>} />
+          <Route path="/perfil" element={<Seccion nombre="el perfil"><Suspense fallback={<SkeletonFormulario />}><PaginaPerfil /></Suspense></Seccion>} />
           <Route path="/pacientes" element={<Seccion nombre="los pacientes"><PaginaPacientes /></Seccion>} />
           <Route path="/pacientes/:id" element={<Seccion nombre="el expediente"><PaginaDetallePaciente /></Seccion>} />
           <Route path="/sin-acceso" element={<PaginaSinAcceso />} />
           <Route element={<RutaProtegida rolesPermitidos={["GERENCIA", "ADMIN"]} />}>
-            <Route path="/reportes" element={<Seccion nombre="los reportes"><PaginaReportes /></Seccion>} />
+            <Route path="/reportes" element={<Seccion nombre="los reportes"><Suspense fallback={<SkeletonReportes />}><PaginaReportes /></Suspense></Seccion>} />
           </Route>
           <Route path="/historial" element={<Seccion nombre="el historial"><PaginaHistorialCitas /></Seccion>} />
           <Route path="/citas" element={<Seccion nombre="la agenda"><PaginaCitas /></Seccion>} />

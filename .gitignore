@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 
 *-qa.local.*
+
+# Entorno local y credenciales de despliegue
+.env
+.env.*
+!.env.example
+.vercel/

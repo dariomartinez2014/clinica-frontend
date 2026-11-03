@@ -1,3 +1,4 @@
+import { SkeletonReportes } from "../shared/components/ui/Skeletons";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import EstadoVacio from "../shared/components/ui/EstadoVacio";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -9,7 +10,7 @@ export default function PaginaReportes() {
   return <main className="mx-auto max-w-6xl px-6 py-10">
     <h1 className="text-3xl font-bold">Reportes</h1>
     <p className="mt-2 mb-8 text-slate-600">Citas por especialidad y actividad de los últimos siete días. Datos reales de la API.</p>
-    {cargando ? <div role="status" aria-label="Cargando reportes" className="grid gap-6 lg:grid-cols-2">{[0,1].map(i => <div key={i} className="h-96 animate-pulse motion-reduce:animate-none rounded-xl bg-slate-200" />)}</div>
+    {cargando ? <SkeletonReportes />
     : error ? <AlertaBanner tipo="error" mensaje={error} accion={{ label: "Reintentar", onClick: recargar }} />
     : data && <div className="grid gap-6 lg:grid-cols-2">
       <section className="min-w-0 rounded-xl border border-slate-200 bg-white p-5" aria-label="Gráfica de citas por especialidad">
