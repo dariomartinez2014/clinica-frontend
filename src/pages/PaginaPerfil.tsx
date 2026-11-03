@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaPerfil con sus datos, controles y componentes visibles.
 import Spinner from "../shared/components/ui/Spinner";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import { useState } from "react";

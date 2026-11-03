@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo los campos y acciones del formulario FormularioCita para recoger y procesar la entrada del usuario.
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";

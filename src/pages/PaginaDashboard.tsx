@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaDashboard con sus datos, controles y componentes visibles.
 import { useDashboard } from "../hooks/useDashboard";
 import { Link } from "react-router-dom";
 import MetricCard from "../components/MetricCard";

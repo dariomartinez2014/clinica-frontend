@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí pido confirmar una acción y bloqueo los controles mientras se está guardando.
 import { useEffect, useId, useRef } from "react";
 import Spinner from "./Spinner";
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 export default function ModalConfirmacion({ titulo, mensaje, cargando, onConfirmar, onCancelar, textoConfirmar = "Confirmar", textoCargando = "Procesando..." }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const id = useId();
+  // Aquí sincronizo el estado con los cambios indicados en las dependencias del efecto.
   useEffect(() => {
     const elemento = dialog.current;
     const focoAnterior = document.activeElement;

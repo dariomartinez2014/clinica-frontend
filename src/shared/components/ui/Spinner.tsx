@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí muestro el indicador de carga, pequeño o centrado en toda la pantalla según sus opciones.
 interface SpinnerProps { fullscreen?: boolean; etiqueta?: string }
 export default function Spinner({ fullscreen = false, etiqueta = "Cargando" }: SpinnerProps) {
   return <div role="status" aria-label={etiqueta} className={fullscreen ? "fixed inset-0 z-50 flex items-center justify-center bg-white/80" : "inline-flex items-center gap-2 align-middle"}>

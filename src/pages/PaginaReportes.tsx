@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaReportes con sus datos, controles y componentes visibles.
 import { SkeletonReportes } from "../shared/components/ui/Skeletons";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";
 import EstadoVacio from "../shared/components/ui/EstadoVacio";

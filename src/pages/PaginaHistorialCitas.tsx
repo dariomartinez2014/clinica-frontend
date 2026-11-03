@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaHistorialCitas con sus datos, controles y componentes visibles.
 import { useNavigate } from "react-router-dom";
 import { useHistorialCitas } from "../features/citas/hooks/useHistorialCitas";
 import AlertaBanner from "../shared/components/ui/AlertaBanner";

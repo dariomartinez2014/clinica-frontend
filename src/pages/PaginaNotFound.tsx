@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaNotFound con sus datos, controles y componentes visibles.
 import { Link } from 'react-router-dom';
 
 // 404: muestro esta página si no existe la ruta o el paciente solicitado.

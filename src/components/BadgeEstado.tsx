@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el componente BadgeEstado para reutilizar su presentación y los eventos que recibe.
 import type { EstadoPaciente } from '../types/paciente';
 
 // Estado que muestra la etiqueta.

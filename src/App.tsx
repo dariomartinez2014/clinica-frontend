@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la aplicación: junto las pantallas o componentes que se ven al entrar.
 import { lazy, Suspense, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorBoundary from "./shared/components/ui/ErrorBoundary";

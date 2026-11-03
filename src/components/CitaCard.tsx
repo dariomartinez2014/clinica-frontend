@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el componente CitaCard para reutilizar su presentación y los eventos que recibe.
 import ModalConfirmacion from "../shared/components/ui/ModalConfirmacion";
 import { useOptimistic, useTransition, useState } from "react";
 import toast from "react-hot-toast";

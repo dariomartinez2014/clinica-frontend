@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el componente PacienteCard para reutilizar su presentación y los eventos que recibe.
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { usePacientes } from "../features/pacientes/hooks/usePacientes";

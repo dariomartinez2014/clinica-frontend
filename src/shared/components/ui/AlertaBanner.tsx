@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí muestro un aviso reutilizable con su tipo de mensaje y una acción cuando hace falta.
 import type { ReactNode } from "react";
 export interface AlertaBannerProps {
   tipo: "info" | "exito" | "advertencia" | "error";

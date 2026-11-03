@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaDetallePaciente con sus datos, controles y componentes visibles.
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDetallePaciente } from "../features/pacientes/hooks/useDetallePaciente";
 import { SkeletonDetalle, SkeletonCitaRow } from "../shared/components/ui/Skeletons";

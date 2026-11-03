@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo la selección y previsualización de la foto antes de enviarla al servidor.
 import { useEffect, useId, useState } from "react";
 import type { ChangeEvent } from "react";
 import toast from "react-hot-toast";
@@ -12,6 +13,7 @@ export default function InputFotoPerfil({ fotoActual, onChange, disabled = false
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [imagenFallida, setImagenFallida] = useState<string | null>(null);
+  // Aquí sincronizo el estado con los cambios indicados en las dependencias del efecto.
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
   function handleSeleccion(e: ChangeEvent<HTMLInputElement>) {
     const archivo = e.target.files?.[0];

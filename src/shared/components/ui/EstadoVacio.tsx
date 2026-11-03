@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí explico por qué no hay registros y muestro una acción cuando la pantalla la proporciona.
 export interface EstadoVacioProps {
   titulo: string;
   descripcion?: string;

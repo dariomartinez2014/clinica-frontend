@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaLogin con sus datos, controles y componentes visibles.
 import Spinner from "../shared/components/ui/Spinner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

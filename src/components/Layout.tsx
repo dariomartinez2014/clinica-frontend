@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo el marco compartido de las páginas y su navegación.
 import { useAuthStore } from "../stores/authStore";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 

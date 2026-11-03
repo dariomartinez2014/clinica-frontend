@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí capturo errores de render de los componentes hijos y muestro la alternativa de recuperación.
 import { Component, type ReactNode } from "react";
 import AlertaBanner from "./AlertaBanner";
 interface Props { children: ReactNode; fallback?: ReactNode; nombre?: string }

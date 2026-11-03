@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaCitas con sus datos, controles y componentes visibles.
 import { useState } from "react";
 import type { FormEvent } from "react";
 
