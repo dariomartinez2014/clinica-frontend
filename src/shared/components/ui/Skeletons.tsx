@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno las formas de carga para reservar espacio mientras llegan los datos.
 function Linea({ clase = "w-full" }: { clase?: string }) { return <div className={`h-4 rounded bg-slate-200 ${clase}`} />; }
 const movimiento = "animate-pulse motion-reduce:animate-none";
 export function SkeletonMetricCard() { return <div aria-hidden="true" className={`${movimiento} min-h-[202px] rounded-xl border border-slate-200 bg-white p-6 shadow-sm`}><div className="flex justify-between"><Linea clase="w-28" /><div className="size-11 rounded-lg bg-slate-200" /></div><div className="my-4 h-10 w-20 rounded bg-slate-200" /><Linea clase="w-40" /></div>; }

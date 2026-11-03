@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí cargo el expediente y compongo sus citas sin repetir la consulta del detalle.
 import { useCallback } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { detalle } from "../../../services/pacientes";

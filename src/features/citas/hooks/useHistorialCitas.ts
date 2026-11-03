@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí conecto la consulta del historial con los filtros y la página guardados en la URL.
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { detalle } from "../../../services/pacientes";
@@ -17,6 +18,7 @@ export function useHistorialCitas() {
   const obtener = useCallback(async (signal: AbortSignal): Promise<Cita[]> => valido ? (await detalle(pacienteId, signal)).data.citas : [], [pacienteId, valido]);
   const { data, cargando, error, recargar } = useApi(obtener);
   const { citas, pagina, totalPaginas, total } = paginarCitas(data ?? [], estado, numero);
+  // Aquí ajusto los parámetros de la URL para conservar filtros y paginación.
   useEffect(() => {
     if (valido && data && !cargando && (params.get("pagina") !== String(pagina) || params.get("estado") !== estado)) {
       const siguientes = new URLSearchParams(params);

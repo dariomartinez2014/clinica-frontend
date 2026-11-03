@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí adapto las respuestas de colección para leer sus registros y su total.
 // La API puede devolver un objeto con total o solo un array.
 export type Coleccion<T> = { data: T[]; total: number } | T[];
 

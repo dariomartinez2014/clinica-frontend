@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo los datos de reportes según el formato que necesita esta capa de la aplicación.
 import type { Cita } from '../types/cita';
 import type { CitasPorDia, ReporteEspecialidad } from '../types/reporte';
 

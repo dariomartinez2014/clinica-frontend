@@ -1,4 +1,6 @@
+// Apunte de estudio: Aquí convierto los errores recibidos en mensajes que la interfaz puede mostrar.
 import axios from 'axios';
+// Aquí reviso el error antes de convertirlo en un mensaje legible.
 export function extraerMensajeError(err: unknown): string {
   if (axios.isAxiosError<unknown>(err)) {
     const data: unknown = err.response?.data;

@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí describo la forma de los datos con TypeScript. Estos tipos no ejecutan validaciones en el servidor.
 export type EstadoCita = "PROGRAMADA" | "COMPLETADA" | "CANCELADA";
 export interface Cita {
   id: number;

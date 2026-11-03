@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí expongo los datos y acciones de sesión sin importar el store desde las páginas.
 import { useAuthStore } from "../stores/authStore";
 
 export function useAuth() {

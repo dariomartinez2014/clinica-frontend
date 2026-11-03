@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno los valores de pacientes que utiliza la aplicación; este archivo por sí solo no es una base de datos.
 import type { Paciente } from '../types/paciente';
 
 // Datos de ejemplo del MP1.

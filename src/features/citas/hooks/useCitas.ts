@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno el estado y las acciones de citas. Reutilizo las citas del expediente cuando ya están cargadas.
 import { useEffect } from "react";
 import { useCitasStore } from "../../../stores/citasStore";
 import { useFiltrosStore } from "../../../stores/filtrosStore";
@@ -23,6 +24,7 @@ export function useCitas({ pacienteId, medicoId, citasIniciales }: OpcionesCitas
   const actualizarEstado = useCitasStore(s => s.actualizarEstado);
   const estadoFiltro = useFiltrosStore(s => s.estadoCitaFiltro);
   const setEstado = useFiltrosStore(s => s.setEstadoCita);
+  // Aquí inicio o actualizo la consulta cuando cambian sus dependencias.
   useEffect(() => {
     // Si el expediente ya trajo las citas, las reutilizo sin repetir la petición.
     if (citasIniciales) mostrarCitas(citasIniciales);

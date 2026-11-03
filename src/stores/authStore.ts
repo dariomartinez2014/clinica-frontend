@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí guardo el estado compartido de auth y las acciones que lo actualizan.
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { LoginResponse } from "../services/auth";

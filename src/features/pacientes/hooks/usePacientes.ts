@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno la consulta, los filtros y las acciones de pacientes para que la página se ocupe de la vista.
 import { useEffect } from "react";
 import { usePacientesStore } from "../../../stores/pacientesStore";
 import { useFiltrosStore } from "../../../stores/filtrosStore";
@@ -23,6 +24,7 @@ export function usePacientes({ cargaInicial = true, todos = false }: { cargaInic
   // Espero a que se termine de escribir para no consultar la API en cada tecla.
   const query = useDebounce(busqueda, 350);
   const buscando = cargando || busqueda !== query;
+  // Aquí inicio o actualizo la consulta cuando cambian sus dependencias.
   useEffect(() => {
     // Las tarjetas solo usan acciones; el formulario de citas necesita la lista completa.
     if (!cargaInicial) return;

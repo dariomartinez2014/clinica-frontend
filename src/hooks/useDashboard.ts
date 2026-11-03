@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí cargo las métricas iniciales y entrego su estado a la pantalla del dashboard.
 import { useEffect } from "react";
 import { useDashboardStore } from "../stores/dashboardStore";
 
