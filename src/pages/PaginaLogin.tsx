@@ -1,3 +1,5 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaLogin con sus datos, controles y componentes visibles.
+import Spinner from "../shared/components/ui/Spinner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,12 +8,12 @@ import toast from "react-hot-toast";
 import { loginSchema } from "../schemas/loginSchema";
 import type { LoginFormData } from "../schemas/loginSchema";
 import { login } from "../services/auth";
-import { useAuthStore } from "../stores/authStore";
+import { useAuth } from "../hooks/useAuth";
 import { extraerMensajeError } from "../lib/errorHandler";
 export default function PaginaLogin() {
   const navigate = useNavigate();
-  const setAuth = useAuthStore((s) => s.login);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // El hook expone las acciones de sesión sin importar Zustand en la página.
+  const { login: setAuth, isAuthenticated } = useAuth();
   const [errorServidor, setErrorServidor] = useState("");
   const {
     register,
@@ -114,7 +116,7 @@ export default function PaginaLogin() {
             disabled={isSubmitting}
             className="w-full rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white disabled:opacity-60"
           >
-            {isSubmitting ? "Ingresando..." : "Ingresar"}
+            {isSubmitting ? <><Spinner /> Ingresando...</> : "Ingresar"}
           </button>
         </form>
       </section>

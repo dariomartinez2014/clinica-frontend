@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaNuevaCita con sus datos, controles y componentes visibles.
 import FormularioCita from "../components/FormularioCita";
 import { useNavigate } from "react-router-dom";
 

@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaSinAcceso con sus datos, controles y componentes visibles.
 import { Link } from "react-router-dom";
 
 export default function PaginaSinAcceso() {

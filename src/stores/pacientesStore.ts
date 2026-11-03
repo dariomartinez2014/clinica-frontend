@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí guardo el estado compartido de pacientes y las acciones que lo actualizan.
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import * as servicio from "../services/pacientes";

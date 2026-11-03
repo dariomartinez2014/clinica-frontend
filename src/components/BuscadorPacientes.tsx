@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno la lógica de BuscadorPacientes que utiliza esta parte del proyecto.
 import type { ChangeEvent } from "react";
 import { useFiltrosStore } from "../stores/filtrosStore";
 export default function BuscadorPacientes({

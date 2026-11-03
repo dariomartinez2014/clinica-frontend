@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reviso la sesión y los permisos antes de mostrar una ruta. El servidor también debe comprobarlos.
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 

@@ -1,40 +1,23 @@
-import { useDebounce } from "../hooks/useDebounce";
-import { useEffect, useState } from "react";
+// Apunte de estudio: Aquí organizo la pantalla PaginaPacientes con sus datos, controles y componentes visibles.
+import { useState } from "react";
 
 import FormularioPaciente from "../components/FormularioPaciente";
 import PacienteCard from "../components/PacienteCard";
 import BuscadorPacientes from "../components/BuscadorPacientes";
-import Cargando from "../components/Cargando";
+import SkeletonPacienteRow from "../shared/components/ui/SkeletonPacienteRow";
+import AlertaBanner from "../shared/components/ui/AlertaBanner";
+import EstadoVacio from "../shared/components/ui/EstadoVacio";
 
-import { usePacientesStore } from "../stores/pacientesStore";
-import { useFiltrosStore } from "../stores/filtrosStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
 
 export default function PaginaPacientes() {
-  const pacientes = usePacientesStore((s) => s.pacientes);
-  const total = usePacientesStore((s) => s.total);
-  const cargando = usePacientesStore((s) => s.cargando);
-  const error = usePacientesStore((s) => s.error);
-  const cargar = usePacientesStore((s) => s.cargar);
-  const cancelarCarga = usePacientesStore((s) => s.cancelarCarga);
-  const pagina = usePacientesStore((s) => s.pagina);
-  const totalPaginas = usePacientesStore((s) => s.totalPaginas);
-  const busqueda = useFiltrosStore((s) => s.queryPacientes);
-  const query = useDebounce(busqueda, 350);
-  const buscando = cargando || busqueda !== query;
-  useEffect(() => {
-    void cargar(query);
-    return cancelarCarga;
-  }, [query, cargar, cancelarCarga]);
-  const especialidad = useFiltrosStore((s) => s.especialidadFiltro);
-  const setEspecialidad = useFiltrosStore((s) => s.setEspecialidad);
-  const resetFiltros = useFiltrosStore((s) => s.resetFiltros);
+  // El hook prepara los datos; aquí solo manejo el formulario y la vista.
+  const { pacientes, total, pagina, totalPaginas, cargando, error, cargar,
+    query, buscando, especialidad, setEspecialidad, resetFiltros, filtrados } = usePacientes();
+  const [abrirFormulario, setAbrirFormulario] = useState(false);
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const editando = pacientes.find((p) => p.id === editandoId);
-  const filtrados = pacientes.filter(
-    (paciente) =>
-      (especialidad === "Todas" ||
-        paciente.especialidadAsignada === especialidad),
-  );
+
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">
@@ -55,35 +38,21 @@ export default function PaginaPacientes() {
           Actualizar lista
         </button>
       </div>
-      {error && (
-        <div
-          role="alert"
-          className="mb-5 rounded-lg bg-red-50 p-5 text-red-800"
-        >
-          <p>No se pudo completar la operación: {error}</p>
-          <button
-            onClick={() => {
-              void cargar(query, pagina);
-            }}
-            className="mt-3 rounded-lg border border-red-300 px-4 py-2"
-          >
-            Reintentar
-          </button>
-        </div>
-      )}
+      {error && <AlertaBanner tipo="error" mensaje={error} accion={{ label: "Reintentar", onClick: () => { void cargar(query, pagina); } }} />}
+      <button onClick={() => setAbrirFormulario(true)} className="mb-5 rounded-lg bg-emerald-700 px-4 py-2 text-white">Agregar paciente</button>
       <>
         <p className="mb-5 text-sm text-slate-600">
           {total} paciente(s) registrado(s)
         </p>
-        <FormularioPaciente
+        {(abrirFormulario || editando) && <FormularioPaciente
           key={editando?.id ?? "nuevo"}
           paciente={editando ?? undefined}
           onGuardar={() => {
-            setEditandoId(null);
+            setEditandoId(null); setAbrirFormulario(false);
             void cargar(query, pagina);
           }}
-          onCancelar={editando ? () => setEditandoId(null) : undefined}
-        />
+          onCancelar={() => { setEditandoId(null); setAbrirFormulario(false); }}
+        />}
         <BuscadorPacientes buscando={buscando} />
         <label>
           Especialidad{" "}
@@ -108,24 +77,8 @@ export default function PaginaPacientes() {
             ? "Buscando pacientes..."
             : `${total} paciente(s) encontrado(s)`}
         </p>
-        {!buscando && filtrados.length === 0 && (
-          <p className="text-slate-500">
-            No hay pacientes que coincidan con la búsqueda.
-          </p>
-        )}
-        {cargando && <Cargando />}
-        <div
-          aria-busy={buscando}
-          className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
-        >
-          {filtrados.map((paciente) => (
-            <PacienteCard
-              key={paciente.id}
-              paciente={paciente}
-              onEditar={() => setEditandoId(paciente.id)}
-            />
-          ))}
-        </div>
+        {!buscando && !error && filtrados.length === 0 && <EstadoVacio titulo={query || especialidad !== "Todas" ? "No hay pacientes que coincidan" : "No hay pacientes registrados"} accion={{ label: "Agregar paciente", onClick: () => setAbrirFormulario(true) }} />}
+        {buscando ? <div role="status" aria-label="Cargando pacientes" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{[0,1,2,3,4,5].map(i => <SkeletonPacienteRow key={i} />)}</div> : <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{filtrados.map(paciente => <PacienteCard key={paciente.id} paciente={paciente} onEditar={() => setEditandoId(paciente.id)} />)}</div>}
         {totalPaginas > 1 && (
           <nav aria-label="Páginas de pacientes" className="mt-5 flex gap-3">
             <button

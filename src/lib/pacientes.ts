@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno la lógica de pacientes que utiliza esta parte del proyecto.
 import type { Paciente, EstadoPaciente } from "../types/paciente";
 
 // Datos que devuelve Express. Algunos campos del MP1 son opcionales.

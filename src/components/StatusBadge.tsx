@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el componente StatusBadge para reutilizar su presentación y los eventos que recibe.
 // activo indica si el sistema está disponible.
 interface StatusBadgeProps {
   activo: boolean;

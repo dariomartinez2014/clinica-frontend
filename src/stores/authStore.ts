@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí guardo el estado compartido de auth y las acciones que lo actualizan.
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { LoginResponse } from "../services/auth";
@@ -6,6 +7,7 @@ interface AuthState {
   usuario: LoginResponse["usuario"] | null;
   isAuthenticated: boolean;
   login: (token: string, usuario: LoginResponse["usuario"]) => void;
+  actualizarUsuario: (usuario: LoginResponse["usuario"]) => void;
   logout: () => void;
 }
 export const useAuthStore = create<AuthState>()(
@@ -15,6 +17,7 @@ export const useAuthStore = create<AuthState>()(
       usuario: null,
       isAuthenticated: false,
       login: (token, usuario) => set({ token, usuario, isAuthenticated: true }),
+      actualizarUsuario: (usuario) => set((state) => state.isAuthenticated ? { usuario } : {}),
       logout: () => set({ token: null, usuario: null, isAuthenticated: false }),
     }),
     {

@@ -1,12 +1,15 @@
-import { useOptimistic, useTransition } from "react";
+// Apunte de estudio: Aquí preparo el componente CitaCard para reutilizar su presentación y los eventos que recibe.
+import ModalConfirmacion from "../shared/components/ui/ModalConfirmacion";
+import { useOptimistic, useTransition, useState } from "react";
 import toast from "react-hot-toast";
 import type { Cita, EstadoCita } from "../types/cita";
-import { useCitasStore } from "../stores/citasStore";
+import { useCitas } from "../features/citas/hooks/useCitas";
 import { extraerMensajeError } from "../lib/errorHandler";
 
 export default function CitaCard({ cita }: { cita: Cita }) {
-  const actualizarEstado = useCitasStore((s) => s.actualizarEstado);
-  const seleccionar = useCitasStore((s) => s.seleccionar);
+  const [pendiente, setPendiente] = useState<Exclude<EstadoCita, "PROGRAMADA"> | null>(null);
+  // Reutilizo las acciones de citas y mantengo aquí la confirmación visual.
+  const { actualizarEstado, seleccionar } = useCitas();
   const [estado, mostrarEstado] = useOptimistic(
     cita.estado,
     (_actual, siguiente: EstadoCita) => siguiente,
@@ -17,6 +20,7 @@ export default function CitaCard({ cita }: { cita: Cita }) {
       mostrarEstado(siguiente);
       try {
         await actualizarEstado(cita.id, siguiente);
+        setPendiente(null);
         toast.success("Estado de cita actualizado");
       } catch (err: unknown) {
         toast.error(`Cambio revertido: ${extraerMensajeError(err)}`);
@@ -70,7 +74,7 @@ export default function CitaCard({ cita }: { cita: Cita }) {
         onChange={(event) => {
           const siguiente = event.target.value;
           if (siguiente === "COMPLETADA" || siguiente === "CANCELADA")
-            cambiar(siguiente);
+            setPendiente(siguiente);
         }}
         className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 disabled:opacity-60"
       >
@@ -85,6 +89,7 @@ export default function CitaCard({ cita }: { cita: Cita }) {
           Guardando cambio...
         </p>
       )}
+      {pendiente && <ModalConfirmacion titulo="Cambiar estado de cita" mensaje={`¿Marcar la cita #${cita.id} como ${pendiente.toLowerCase()}?`} cargando={guardando} textoConfirmar="Confirmar cambio" textoCargando="Guardando..." onCancelar={() => setPendiente(null)} onConfirmar={() => cambiar(pendiente)} />}
     </article>
   );
 }

@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el componente MetricCard para reutilizar su presentación y los eventos que recibe.
 import type { Metrica, Tendencia } from '../types';
 
 // Datos que recibe la tarjeta.

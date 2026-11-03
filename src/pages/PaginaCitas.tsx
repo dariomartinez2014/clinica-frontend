@@ -1,23 +1,23 @@
+// Apunte de estudio: Aquí organizo la pantalla PaginaCitas con sus datos, controles y componentes visibles.
 import { useState } from "react";
 import type { FormEvent } from "react";
 
-import { useCitasStore } from "../stores/citasStore";
-import { useFiltrosStore } from "../stores/filtrosStore";
+import { useCitas } from "../features/citas/hooks/useCitas";
 
 import CitaCard from "../components/CitaCard";
-import Cargando from "../components/Cargando";
+import SkeletonCitaRow from "../shared/components/ui/SkeletonCitaRow";
+import AlertaBanner from "../shared/components/ui/AlertaBanner";
+import EstadoVacio from "../shared/components/ui/EstadoVacio";
+import { useNavigate } from "react-router-dom";
 
 export default function PaginaCitas() {
-  const citas = useCitasStore((s) => s.citas);
-  const cargando = useCitasStore((s) => s.cargando);
-  const error = useCitasStore((s) => s.error);
-  const cargarPorMedico = useCitasStore((s) => s.cargarPorMedico);
-  const seleccionada = useCitasStore((s) => s.citaSeleccionada);
-  const estadoFiltro = useFiltrosStore((s) => s.estadoCitaFiltro);
-  const setEstado = useFiltrosStore((s) => s.setEstadoCita);
+  // La agenda recibe datos y acciones sin suscribirse al store directamente.
+  const { citas, cargando, error, cargarPorMedico, seleccionada, estadoFiltro, setEstado } = useCitas();
   const [medicoId, setMedicoId] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [consultado, setConsultado] = useState(false);
+  const navigate = useNavigate();
+  const filtradas = citas.filter(cita => [cita.id, cita.paciente?.nombre, cita.paciente?.apellido, cita.motivo].join(" ").toLowerCase().includes(busqueda.toLowerCase()) && (estadoFiltro === "Todos" || cita.estado === estadoFiltro));
   async function cargar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setConsultado(true);
@@ -29,11 +29,7 @@ export default function PaginaCitas() {
       <p className="mt-2 text-slate-600">
         Consulta la agenda del médico y actualiza sus citas.
       </p>
-      <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        Esta sección requiere una cuenta con rol MEDICO. Las cuentas de
-        recepción registran pacientes y agendan citas, pero no cambian su
-        estado.
-      </p>
+      <AlertaBanner tipo="info" mensaje="La agenda requiere rol MEDICO. Recepción puede registrar pacientes y agendar citas." />
       <form
         onSubmit={(event) => {
           void cargar(event);
@@ -102,36 +98,10 @@ export default function PaginaCitas() {
           {seleccionada.motivo || "Sin motivo registrado"}
         </p>
       )}
-      {cargando ? (
-        <Cargando />
-      ) : error && citas.length === 0 ? (
-        <p role="alert" className="rounded-lg bg-red-50 p-4 text-red-800">
-          No se pudo completar la operación: {error}. Comprueba el rol y el ID,
-          e intenta consultar de nuevo.
-        </p>
-      ) : consultado && citas.length === 0 ? (
-        <p>No hay citas para este médico.</p>
-      ) : consultado ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {citas
-            .filter(
-              (cita) =>
-                [
-                  cita.id,
-                  cita.paciente?.nombre,
-                  cita.paciente?.apellido,
-                  cita.motivo,
-                ]
-                  .join(" ")
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase()) &&
-                (estadoFiltro === "Todos" || cita.estado === estadoFiltro),
-            )
-            .map((cita) => (
-              <CitaCard key={cita.id} cita={cita} />
-            ))}
-        </div>
-      ) : null}
+      {error && <AlertaBanner tipo="error" mensaje={`No se pudo completar la operación: ${error}`} />}
+      {cargando ? <div role="status" aria-label="Cargando agenda" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{[0,1,2].map(i => <SkeletonCitaRow key={i} />)}</div>
+        : consultado && !error && !filtradas.length ? <EstadoVacio titulo="No hay citas que coincidan" accion={{ label: "Agendar cita", onClick: () => navigate("/citas/nueva") }} />
+        : consultado ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{filtradas.map(cita => <CitaCard key={cita.id} cita={cita} />)}</div> : null}
     </main>
   );
 }

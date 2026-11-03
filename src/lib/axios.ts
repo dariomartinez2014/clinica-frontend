@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo el cliente HTTP. Los servicios lo reutilizan para comunicarse con la API.
 import axios from "axios";
 import { useAuthStore } from "../stores/authStore";
 export const api = axios.create({

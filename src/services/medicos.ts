@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí agrupo las peticiones de medicos para que los componentes no repitan las llamadas HTTP.
 import { api } from "../lib/axios";
 import type { Coleccion } from "../lib/coleccion";
 

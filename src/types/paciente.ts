@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí describo la forma de los datos con TypeScript. Estos tipos no ejecutan validaciones en el servidor.
 // Estados que puede mostrar la app.
 export type EstadoPaciente = "activo" | "inactivo" | "en_espera" | "sin_datos";
 

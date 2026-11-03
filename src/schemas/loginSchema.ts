@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí defino las reglas que deben cumplir los datos antes de usarlos o enviarlos.
 import { z } from "zod";
 export const loginSchema = z.object({
   email: z.string().trim().email("Ingresa un email válido"),

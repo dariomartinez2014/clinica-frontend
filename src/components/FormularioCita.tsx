@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+// Apunte de estudio: Aquí organizo los campos y acciones del formulario FormularioCita para recoger y procesar la entrada del usuario.
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { citaSchema } from "../schemas/citaSchema";
 import type { CitaFormData } from "../schemas/citaSchema";
 import { useMedicos } from "../hooks/useMedicos";
-import { usePacientesStore } from "../stores/pacientesStore";
-import { useCitasStore } from "../stores/citasStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
+import { useCitas } from "../features/citas/hooks/useCitas";
 
 import { extraerMensajeError } from "../lib/errorHandler";
 
-import Cargando from "./Cargando";
+import { SkeletonFormulario } from "../shared/components/ui/Skeletons";
 
 export default function FormularioCita() {
   const {
@@ -19,11 +19,9 @@ export default function FormularioCita() {
     error: errorMedicos,
     reintentar,
   } = useMedicos();
-  const pacientes = usePacientesStore((s) => s.pacientes);
-  const cargando = usePacientesStore((s) => s.cargando);
-  const error = usePacientesStore((s) => s.error);
-  const cargar = usePacientesStore((s) => s.cargar);
-  const agregarCita = useCitasStore((s) => s.agregarCita);
+  // El hook carga las opciones completas; el formulario solo registra la cita.
+  const { pacientes, cargando, error, cargar } = usePacientes({ todos: true });
+  const { agregarCita } = useCitas();
   const {
     register,
     handleSubmit,
@@ -39,9 +37,6 @@ export default function FormularioCita() {
       motivo: "",
     },
   });
-  useEffect(() => {
-    void cargar();
-  }, [cargar]);
   async function guardar(datos: CitaFormData) {
     try {
       await agregarCita({
@@ -56,7 +51,7 @@ export default function FormularioCita() {
       toast.error(extraerMensajeError(err));
     }
   }
-  if (cargando || cargandoMedicos) return <Cargando />;
+  if (cargando || cargandoMedicos) return <SkeletonFormulario />;
   if (error || errorMedicos)
     return (
       <div role="alert" className="rounded-lg bg-red-50 p-5 text-red-800">

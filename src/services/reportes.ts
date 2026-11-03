@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí preparo los datos de reportes según el formato que necesita esta capa de la aplicación.
 import axios from 'axios';
 import { api } from '../lib/axios';
 import { obtenerDatos } from '../lib/coleccion';

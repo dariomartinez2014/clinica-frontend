@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí reúno datos, carga, error y reintento. Cancelo la petición al salir para ignorar respuestas tardías.
 import { useCallback, useEffect, useState } from "react";
 import { extraerMensajeError } from "../lib/errorHandler";
 export interface UseApiResult<T> {
@@ -13,6 +14,7 @@ export function useApi<T>(
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [contador, setContador] = useState(0);
+  // Aquí inicio o actualizo la consulta cuando cambian sus dependencias.
   useEffect(() => {
     const controller = new AbortController();
     // La nueva petición vuelve a activar el indicador de carga.

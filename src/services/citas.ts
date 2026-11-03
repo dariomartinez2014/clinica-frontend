@@ -1,3 +1,4 @@
+// Apunte de estudio: Aquí agrupo las peticiones de citas para que los componentes no repitan las llamadas HTTP.
 import { api } from "../lib/axios";
 import type { Cita, EstadoCita } from "../types/cita";
 

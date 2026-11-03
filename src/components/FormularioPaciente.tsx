@@ -1,10 +1,11 @@
+// Apunte de estudio: Aquí organizo los campos y acciones del formulario FormularioPaciente para recoger y procesar la entrada del usuario.
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { pacienteSchema } from "../schemas/pacienteSchema";
 import type { PacienteFormData } from "../schemas/pacienteSchema";
 import type { Paciente } from "../types/paciente";
-import { usePacientesStore } from "../stores/pacientesStore";
+import { usePacientes } from "../features/pacientes/hooks/usePacientes";
 
 import { extraerMensajeError } from "../lib/errorHandler";
 
@@ -19,8 +20,8 @@ export default function FormularioPaciente({
   onGuardar,
   onCancelar,
 }: Props) {
-  const crear = usePacientesStore((s) => s.crear);
-  const actualizar = usePacientesStore((s) => s.actualizar);
+  // Uso las acciones sin iniciar otra carga encima de la lista abierta.
+  const { crear, actualizar } = usePacientes({ cargaInicial: false });
   const {
     register,
     handleSubmit,
