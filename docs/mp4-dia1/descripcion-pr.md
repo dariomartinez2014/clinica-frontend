@@ -1,7 +1,13 @@
-Prepara la Clínica para desplegar en Vercel: rewrite SPA, tipado estricto de VITE_API_URL, exclusión de archivos de entorno y credenciales, y validación de una API HTTPS pública durante el build de Vercel. Divide Perfil y Reportes en cargas diferidas y conserva boundaries por sección, incluido login.
+Publica la Clínica con React/Vite en Vercel, conectada a una API Express/Prisma y una base Neon separada con datos ficticios.
 
-Build y lint pasan sin errores ni advertencias de tamaño. Pasan auth, rutas, perfil, mp3 y la prueba nueva `node scripts/test-deploy.mjs` (rewrites, typo de entorno y rechazo de localhost en producción).
+- App: https://clinica-funval-mp4-demr.vercel.app
+- API: https://clinica-funval-api-demr.vercel.app/api/health
+- Rewrite SPA, VITE_API_URL tipada y validada en producción, archivos de entorno excluidos y Error Boundaries por sección.
+- Build y lint sin errores; pruebas de auth, rutas, perfil, MP3 y configuración de deploy aprobadas.
+- Verificado en producción: login contra la API, dashboard con datos, /pacientes con 14 registros y recarga directa conservando sesión sin 404.
 
-**Borrador: el despliegue no está completado.** Faltan sesión de Vercel con la cuenta autorizada, URL real del backend, CORS del origen de producción, verificación de login/F5 en la URL real y captura de producción. No hay una URL de Vercel que se pueda entregar todavía.
+![Pacientes en producción](https://raw.githubusercontent.com/dariomartinez2014/clinica-frontend/feat/mp4-dia1-deploy/docs/mp4-dia1/produccion-pacientes.png)
 
-Detalles y pasos pendientes en [la guía](https://github.com/dariomartinez2014/clinica-frontend/blob/feat/mp4-dia1-deploy/docs/mp4-dia1/README.md). Incluye los cambios del MP3 del PR #13, aún abierto; este PR se dirige a main como pide la tarea y no fusiona nada automáticamente.
+Desplegado mediante Vercel CLI con el equipo dariomartinez2014. Los siguientes despliegues se realizan con `vercel --prod`; no quedó conectada la integración automática de GitHub. Credenciales de demostración entregadas localmente, fuera del repositorio.
+
+Incluye la base del MP3 del PR #13, aún abierto. No se fusionó main automáticamente.

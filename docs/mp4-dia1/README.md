@@ -1,36 +1,33 @@
 # MP4 — Día 1: despliegue en Vercel
 
-## Código listo
+Publica la Clínica con React/Vite en Vercel, conectada a una API Express/Prisma y una base Neon separada con datos ficticios.
 
-- `vercel.json`: framework Vite, `npm run build`, salida `dist` y rewrite de todas las rutas SPA a `/index.html`.
-- `src/vite-env.d.ts`: `VITE_API_URL: string` y `strictImportMetaEnv`, para rechazar errores en nombres de variables.
-- `.gitignore`: excluye `.env`, `.env.*` y `.vercel/`; conserva `.env.example` como plantilla sin secretos.
-- Validación de build en Vercel: exige una URL HTTPS pública para la API y rechaza localhost.
-- Carga diferida de Perfil y Reportes; el build local pasa sin advertencias de tamaño.
-- ErrorBoundary por sección, incluido el login, y skeletons durante la carga diferida.
+- App: https://clinica-funval-mp4-demr.vercel.app
+- API: https://clinica-funval-api-demr.vercel.app/api/health
+- Rewrite SPA, VITE_API_URL tipada y validada en producción, archivos de entorno excluidos y Error Boundaries por sección.
+- Build y lint sin errores; pruebas de auth, rutas, perfil, MP3 y configuración de deploy aprobadas.
+- Verificado en producción: login contra la API, dashboard con datos, /pacientes con 14 registros y recarga directa conservando sesión sin 404.
 
-## Validación realizada
+![Pacientes en producción](https://raw.githubusercontent.com/dariomartinez2014/clinica-frontend/feat/mp4-dia1-deploy/docs/mp4-dia1/produccion-pacientes.png)
 
-`npm run build`, `npm run lint`, pruebas auth, rutas, perfil y mp3, y `node scripts/test-deploy.mjs` pasan. La prueba de deploy genera deliberadamente errores para verificar que se rechazan URLs inválidas y confirma que un typo de `VITE_API_URL` falla en TypeScript.
+Desplegado mediante Vercel CLI con el equipo dariomartinez2014. Los siguientes despliegues se realizan con `vercel --prod`; no quedó conectada la integración automática de GitHub. Credenciales de demostración entregadas localmente, fuera del repositorio.
 
-## Estado real del despliegue
+Incluye la base del MP3 del PR #13, aún abierto. No se fusionó main automáticamente.
 
-**Pendiente. No existe todavía una URL ni una captura de esta versión desplegada en Vercel.**
+## Configuración
 
-La CLI de Vercel no tenía sesión. El navegador mostró la cuenta GitHub `demr-tech`, que es distinta de la cuenta solicitada `dariomartinez2014`; se canceló la autorización de esa cuenta.
+Frontend: Vite, instalación `npm ci --include=dev`, build `npm run build`, salida `dist`. `vercel.json` sirve index.html en rutas SPA. `src/vite-env.d.ts` declara VITE_API_URL y rechaza nombres incorrectos. El build de Vercel exige API HTTPS pública.
 
-La configuración local de la Clínica apunta a `http://localhost:5195/api`. No se encontró una URL de backend público en los metadatos de despliegue de los repositorios consultados. El backend local solo permite orígenes locales en CORS. Esto no demuestra que no exista otro despliegue; hay que localizarlo o publicarlo desde la cuenta correcta.
+Variable pública de producción: `VITE_API_URL=https://clinica-funval-api-demr.vercel.app/api`.
 
-## Finalizar
+Backend: Express en Node 24, Prisma y Postgres Neon. DATABASE_URL y JWT_SECRET se guardan como secretos de Vercel. UPLOAD_STORAGE=database conserva las fotos entre invocaciones; CORS_ALLOWED_ORIGINS contiene el origen exacto del frontend. Migraciones y demo aplicadas primero en rama de validación y después en production con autorización.
 
-1. Iniciar sesión de GitHub como `dariomartinez2014` y autorizar la CLI de Vercel con esa cuenta.
-2. Localizar o publicar el backend real y comprobar `/api/health` mediante HTTPS. Configurar en su CORS el origen exacto de la web de Vercel; no usar una URL inventada ni un túnel local como producción.
-3. Importar `clinica-frontend` en Vercel. Framework: Vite; build: `npm run build`; output: `dist`.
-4. Añadir `VITE_API_URL` en Production con la URL real del backend, incluyendo `/api` si corresponde. La variable es pública en el navegador: no guardar en ella claves ni tokens.
-5. Desplegar la rama `feat/mp4-dia1-deploy` mediante `vercel --prod` o la integración Git.
-6. Abrir `/login`, iniciar sesión contra el backend real y refrescar `/pacientes`; debe cargar la SPA y conservar la sesión sin 404.
-7. Adjuntar al PR la URL de Vercel y una captura real de producción. Pasar el PR de borrador a listo para revisión solo después de comprobar esos puntos.
+## Verificación
 
-El PR contiene la base del MP3 todavía pendiente de integración en el PR #13; no se modificó ni fusionó `main`.
+El 3 de noviembre de 2026: API health devolvió estado ok y baseDeDatos conectada; login real con usuario ficticio de recepción; dashboard mostró 14 pacientes; navegación a /pacientes y recarga completa mantuvieron sesión sin 404. Captura adjunta obtenida después de recargar.
 
-Referencias oficiales: [Vite en Vercel](https://vercel.com/docs/frameworks/frontend/vite), [variables de entorno de Vite](https://vite.dev/guide/env-and-mode).
+Validaciones locales: build, lint, auth, rutas, perfil, mp3 y test-deploy. Este último provoca errores controlados para confirmar que se rechazan localhost y typos de entorno. Perfil API: 20 comprobaciones de login y archivos aprobadas en la base de validación.
+
+## Repetir despliegue
+
+En la carpeta del frontend, con la CLI autenticada y el proyecto vinculado: `npx vercel --prod --yes --scope dariomartinez2014`. Las variables permanecen configuradas en Vercel. No subir archivos .env, .vercel o contraseñas. No es necesario mantener la computadora local encendida.
