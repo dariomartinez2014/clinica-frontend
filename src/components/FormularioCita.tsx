@@ -10,7 +10,7 @@ import { useCitasStore } from "../stores/citasStore";
 
 import { extraerMensajeError } from "../lib/errorHandler";
 
-import Cargando from "./Cargando";
+import { SkeletonFormulario } from "../shared/components/ui/Skeletons";
 
 export default function FormularioCita() {
   const {
@@ -56,7 +56,7 @@ export default function FormularioCita() {
       toast.error(extraerMensajeError(err));
     }
   }
-  if (cargando || cargandoMedicos) return <Cargando />;
+  if (cargando || cargandoMedicos) return <SkeletonFormulario />;
   if (error || errorMedicos)
     return (
       <div role="alert" className="rounded-lg bg-red-50 p-5 text-red-800">

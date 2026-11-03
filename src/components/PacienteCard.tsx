@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { usePacientesStore } from "../stores/pacientesStore";
 import { extraerMensajeError } from "../lib/errorHandler";
-import ModalConfirmacion from "./ModalConfirmacion";
+import ModalConfirmacion from "../shared/components/ui/ModalConfirmacion";
 import { Link } from "react-router-dom";
 import type { Paciente } from "../types/paciente";
 import BadgeEstado from "./BadgeEstado";
@@ -98,6 +98,8 @@ export default function PacienteCard({
       {confirmando && (
         <ModalConfirmacion
           titulo="Eliminar paciente"
+          textoConfirmar="Eliminar paciente"
+          textoCargando="Eliminando..."
           mensaje={
             "¿Eliminar a " +
             paciente.nombre +

@@ -1,3 +1,4 @@
+import Spinner from "../shared/components/ui/Spinner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -114,7 +115,7 @@ export default function PaginaLogin() {
             disabled={isSubmitting}
             className="w-full rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white disabled:opacity-60"
           >
-            {isSubmitting ? "Ingresando..." : "Ingresar"}
+            {isSubmitting ? <><Spinner /> Ingresando...</> : "Ingresar"}
           </button>
         </form>
       </section>

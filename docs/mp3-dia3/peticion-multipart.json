@@ -1,0 +1,15 @@
+{
+  "method": "PUT",
+  "url": "/api/auth/perfil",
+  "status": 200,
+  "contentType": "multipart/form-data; boundary=----WebKitFormBoundaryzC6UDo0fBMppX9NI",
+  "campos": [
+    "nombre",
+    "email",
+    "telefono",
+    "foto",
+    "foto-qa.local.png"
+  ],
+  "archivo": "foto-qa.local.png",
+  "fecha": "2026-10-28T19:55:49.296Z"
+}
