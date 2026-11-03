@@ -4,7 +4,7 @@ import { useFiltrosStore } from "../../../stores/filtrosStore";
 import { useDebounce } from "../../../hooks/useDebounce";
 
 export function usePacientes({ cargaInicial = true, todos = false }: { cargaInicial?: boolean; todos?: boolean } = {}) {
-  // AquÃ­ selecciono los datos y acciones; la pÃ¡gina ya no necesita conocer Zustand.
+  // Aquí selecciono los datos y acciones; la página ya no necesita conocer Zustand.
   const pacientes = usePacientesStore(s => s.pacientes);
   const total = usePacientesStore(s => s.total);
   const pagina = usePacientesStore(s => s.pagina);
@@ -27,7 +27,7 @@ export function usePacientes({ cargaInicial = true, todos = false }: { cargaInic
     // Las tarjetas solo usan acciones; el formulario de citas necesita la lista completa.
     if (!cargaInicial) return;
     void cargar(todos ? undefined : query);
-    // Cancelo la consulta anterior si cambia la bÃºsqueda o salgo de la pÃ¡gina.
+    // Cancelo la consulta anterior si cambia la búsqueda o salgo de la página.
     return cancelarCarga;
   }, [query, cargar, cancelarCarga, cargaInicial, todos]);
   const filtrados = pacientes.filter(paciente => especialidad === "Todas" || paciente.especialidadAsignada === especialidad);

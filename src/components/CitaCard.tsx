@@ -88,7 +88,7 @@ export default function CitaCard({ cita }: { cita: Cita }) {
           Guardando cambio...
         </p>
       )}
-      {pendiente && <ModalConfirmacion titulo="Cambiar estado de cita" mensaje={`Â¿Marcar la cita #${cita.id} como ${pendiente.toLowerCase()}?`} cargando={guardando} textoConfirmar="Confirmar cambio" textoCargando="Guardando..." onCancelar={() => setPendiente(null)} onConfirmar={() => cambiar(pendiente)} />}
+      {pendiente && <ModalConfirmacion titulo="Cambiar estado de cita" mensaje={`¿Marcar la cita #${cita.id} como ${pendiente.toLowerCase()}?`} cargando={guardando} textoConfirmar="Confirmar cambio" textoCargando="Guardando..." onCancelar={() => setPendiente(null)} onConfirmar={() => cambiar(pendiente)} />}
     </article>
   );
 }

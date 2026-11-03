@@ -101,17 +101,17 @@ export default function FormularioCita() {
           )}
         </div>
         <div className="sm:col-span-2">
-          <label htmlFor="cita-medico">MÃ©dico</label>
+          <label htmlFor="cita-medico">Médico</label>
           <select
             id="cita-medico"
             {...register("medicoId")}
             className={campo}
             aria-invalid={!!errors.medicoId}
           >
-            <option value="">Selecciona un mÃ©dico</option>
+            <option value="">Selecciona un médico</option>
             {medicos.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.nombre} â€” {m.especialidad} (ID {m.id})
+                {m.nombre} — {m.especialidad} (ID {m.id})
               </option>
             ))}
           </select>
@@ -169,7 +169,7 @@ export default function FormularioCita() {
       </fieldset>
       {(!pacientes.length || !medicos.length) && (
         <p className="mt-4 text-amber-800">
-          Necesitas al menos un paciente y un mÃ©dico registrados.
+          Necesitas al menos un paciente y un médico registrados.
         </p>
       )}
       <button

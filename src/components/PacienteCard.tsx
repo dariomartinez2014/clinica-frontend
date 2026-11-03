@@ -50,11 +50,11 @@ export default function PacienteCard({
       </div>
       <dl className="mt-5 space-y-3 text-sm">
         <div>
-          <dt className="text-slate-500">Correo electrÃ³nico</dt>
+          <dt className="text-slate-500">Correo electrónico</dt>
           <dd className="break-all">{paciente.email}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">TelÃ©fono</dt>
+          <dt className="text-slate-500">Teléfono</dt>
           <dd>{paciente.telefono}</dd>
         </div>
         <div>
@@ -62,12 +62,12 @@ export default function PacienteCard({
           <dd>{paciente.especialidadAsignada}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">Ãšltima cita</dt>
+          <dt className="text-slate-500">Última cita</dt>
           <dd>
             {paciente.ultimaCita ? (
               <time dateTime={paciente.ultimaCita}>{paciente.ultimaCita}</time>
             ) : (
-              "Sin informaciÃ³n"
+              "Sin información"
             )}
           </dd>
         </div>
@@ -94,7 +94,7 @@ export default function PacienteCard({
         to={`/pacientes/${paciente.id}`}
         className="mt-5 inline-block text-sm font-semibold text-emerald-700 hover:underline"
       >
-        Ver detalle â†’
+        Ver detalle →
       </Link>
       {confirmando && (
         <ModalConfirmacion
@@ -102,11 +102,11 @@ export default function PacienteCard({
           textoConfirmar="Eliminar paciente"
           textoCargando="Eliminando..."
           mensaje={
-            "Â¿Eliminar a " +
+            "¿Eliminar a " +
             paciente.nombre +
             " " +
             paciente.apellido +
-            "? Esta acciÃ³n no se puede deshacer."
+            "? Esta acción no se puede deshacer."
           }
           cargando={eliminando}
           onCancelar={() => setConfirmando(false)}

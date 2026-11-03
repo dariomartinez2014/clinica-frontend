@@ -60,7 +60,7 @@ export default function FormularioPaciente({
     { name: "nombre", label: "Nombre", type: "text" },
     { name: "apellido", label: "Apellido", type: "text" },
     { name: "email", label: "Email", type: "email" },
-    { name: "telefono", label: "TelÃ©fono (opcional)", type: "tel" },
+    { name: "telefono", label: "Teléfono (opcional)", type: "tel" },
     { name: "fechaNacimiento", label: "Fecha de nacimiento", type: "date" },
   ];
   return (
@@ -121,7 +121,7 @@ export default function FormularioPaciente({
             disabled={isSubmitting}
             className="rounded-lg border border-slate-300 px-4 py-2"
           >
-            Cancelar ediciÃ³n
+            Cancelar edición
           </button>
         )}
       </div>
