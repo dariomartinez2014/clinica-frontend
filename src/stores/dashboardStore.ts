@@ -29,6 +29,7 @@ export const useDashboardStore = create<DashboardState>()(
             api.get<Coleccion<unknown>>("/citas", {
               params: { estado: "Completada" },
             }),
+            api.get<Coleccion<unknown>>("/citas"),
           ]);
           set(
             {
